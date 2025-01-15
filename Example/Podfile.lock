@@ -1,0 +1,52 @@
+PODS:
+  - AFNetworking/NSURLSession (4.0.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.3)
+  - AFNetworking/Security (4.0.3)
+  - AFNetworking/Serialization (4.0.3)
+  - AFNetworking/UIKit (4.0.3):
+    - AFNetworking/NSURLSession
+  - AnywhereUtilCore (1.0.0):
+    - AFNetworking/NSURLSession (~> 4.0.0)
+    - AFNetworking/Reachability (~> 4.0.0)
+    - AFNetworking/Security (~> 4.0.0)
+    - AFNetworking/Serialization (~> 4.0.0)
+    - AFNetworking/UIKit (~> 4.0.0)
+    - Kingfisher (= 8.0.3)
+    - MapxusBaseSDK (= 7.0.0)
+  - Kingfisher (8.0.3)
+  - MapxusBaseSDK (7.0.0):
+    - AFNetworking/NSURLSession (~> 4.0.2)
+    - AFNetworking/Reachability (~> 4.0.2)
+    - AFNetworking/Security (~> 4.0.2)
+    - AFNetworking/Serialization (~> 4.0.2)
+    - YYModel (~> 1.0.5)
+  - YYModel (1.0.6)
+
+DEPENDENCIES:
+  - AnywhereUtilCore (from `../`)
+
+SPEC REPOS:
+  https://github.com/Mapxus/mapxusSpecs.git:
+    - AFNetworking
+    - MapxusBaseSDK
+    - YYModel
+  https://nexus3.mapxus.com/repository/cocoapods-proxy/:
+    - Kingfisher
+
+EXTERNAL SOURCES:
+  AnywhereUtilCore:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AFNetworking: a0ee5c746161b0ce8717dcf1057b4a530bcae72a
+  AnywhereUtilCore: aca3373b02e0d41f4079c8d2ff91c5e43ec04309
+  Kingfisher: 0c23cefff7e8c69217b9ad8c54097a8be77b588f
+  MapxusBaseSDK: eb43f3c64aa5ffd76934b22270dd06ace7e7970d
+  YYModel: 30b7632ef7764dd1b40ae0875740e71c4393445f
+
+PODFILE CHECKSUM: 8b8c3b0a94633d89ac89a02139d29cb581a1ec03
+
+COCOAPODS: 1.16.2

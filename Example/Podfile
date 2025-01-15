@@ -1,0 +1,26 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.0'
+
+source 'https://github.com/Mapxus/mapxusSpecs.git'
+source 'https://nexus3.mapxus.com/repository/cocoapods-proxy/'
+
+use_frameworks!
+
+
+target 'AnywhereUtil_Example' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for AnywhereUtilCore
+  pod 'AnywhereUtilCore', :path => '../'
+
+  target 'AnywhereUtilCoreTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'AnywhereUtilCoreUITests' do
+    # Pods for testing
+  end
+
+end
