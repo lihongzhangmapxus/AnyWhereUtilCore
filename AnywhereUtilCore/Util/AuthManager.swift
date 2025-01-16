@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MapxusBaseSDK
 
 // MARK: - TokenManager
 class TokenManager: NSObject {
@@ -62,23 +61,13 @@ class TokenManager: NSObject {
 public class AuthManager: NSObject {
     static let shared = AuthManager()
     
-    private var apiKey: String?         //ShoplusContext.shared.apiKey
-    private var apiSecret: String?      //ShoplusContext.shared.apiSecret
-
     private let queue = DispatchQueue(label: "com.mapxus.authManager")
     private let completionQueue = DispatchQueue(label: "com.mapxus.authManager.completion", attributes: .concurrent)
     private var messages = [((String?) -> Void)]()
     private let tokenManager = TokenManager()
-    private let mapServiceHandler = MapServiceHandler()
 
-    public static func setup(apiKey: String?, apiSecret: String?) {
-        if let key = apiKey {
-            shared.apiKey = key
-        }
-        if let secret = apiSecret {
-            shared.apiSecret = secret
-        }
-    }
+    //
+    public var onRegisterFinish: (() -> Bool)?
     
     /// 处理消息队列
     private func processMessages(withToken token: String?) {
@@ -104,7 +93,6 @@ public class AuthManager: NSObject {
         queue.async { [weak self] in
             guard let self = self else { return }
             self.messages.append(completion)
-
             if self.tokenManager.isValid() {
                 self.processMessages(withToken: self.tokenManager.tokenStr)
             } else {
@@ -115,47 +103,11 @@ public class AuthManager: NSObject {
 
     /// 刷新 Token
     private func refreshToken() {
-        guard let apiKey = apiKey,
-              let secret = apiSecret else {
-            print("API Key or Secret is missing.")
-            processMessages(withToken: nil)
-            return
-        }
-
-        mapServiceHandler.register(apiKey: apiKey, secret: secret) { [weak self] error in
-            guard let self = self else { return }
-
-            if let error = error {
-                print("Failed to refresh token: \(error)")
-            }
+        let onRegister = onRegisterFinish?()
+        if onRegister == true {
             self.processMessages(withToken: self.tokenManager.tokenStr)
+        } else {
+            processMessages(withToken: nil)
         }
-    }
-}
-
-// MARK: - MapServiceHandler
-class MapServiceHandler: NSObject, MXMServiceDelegate {
-    private var onFinish: ((Error?) -> Void)?
-
-    func register(apiKey: String, secret: String, completion: ((Error?) -> Void)?) {
-        onFinish = completion
-
-        guard !apiKey.isEmpty, !secret.isEmpty else {
-            let error = NSError(domain: "com.mapxus.error", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid API Key or Secret"])
-            onFinish?(error)
-            return
-        }
-
-        let mapServices = MXMMapServices.shared()
-        mapServices.delegate = self
-        mapServices.register(withApiKey: apiKey, secret: secret)
-    }
-
-    func registerMXMServiceSuccess() {
-        onFinish?(nil)
-    }
-
-    func registerMXMServiceFailWithError(_ error: Error) {
-        onFinish?(error)
     }
 }

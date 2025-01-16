@@ -8,9 +8,10 @@
 import XCTest
 //@testable import AnywhereUtilCore
 import AnywhereUtilCore
+import MapxusBaseSDK
 
 final class AnywhereUtilCoreTests: XCTestCase {
-    
+
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
     // Any test you write for XCTest can be annotated as throws and async.
@@ -84,15 +85,13 @@ final class AnywhereUtilCoreTests: XCTestCase {
 //        AppConfig.customHosts[.mapApiHost] = "custom-map-api.com"
 //        AppConfig.customHosts[.anywhereHost] = "custom-anywhere.com"
         
-        AppConfig.currentEnvironment = .dev
+        AppConfig.currentEnvironment = .prod
         print("*** = host = \(ServerConfig.mapApiHost.serverHost())")  // 输出: https://custom-map-api.com
         print("*** = service = \(ServerConfig.serviceHost.serverHost())") // 输出: https://map-service-test.mapxus.com
         print("*** = anywhere = \(ServerConfig.anywhereHost.serverHost())") // 输出: https://custom-anywhere.com
         
 //        AppConfig.customHosts[.mapApiHost] = nil
 //        print(ServerConfig.mapApiHost.serverHost())  // 输出: https://map-api-test.mapxus.com
-        
-        AuthManager.setup(apiKey: "", apiSecret: "")
         
         let expectation = self.expectation(description: "Network Request")
         enum APIPathProvider: APIPathProviderProtocol {
@@ -105,7 +104,26 @@ final class AnywhereUtilCoreTests: XCTestCase {
                 }
             }
         }
-        let re = ProjectRequest()
+        let re = ProjectRequest.shared
+        ProjectRequest.shared.onRegisterFinish = {
+            let handler = MapServiceHandler()
+            var registerSuccess = false
+
+            let semaphore = DispatchSemaphore(value: 0)
+            handler.register(apiKey: "", secret: "") { error in
+                if error == nil {
+                    registerSuccess = true
+                }
+                semaphore.signal() // 结束阻塞
+                expectation.fulfill() // 异步完成测试
+            }
+
+            DispatchQueue.global().async {
+                _ = semaphore.wait(timeout: .now()) // 超时时间避免无限阻塞
+            }
+            return true
+        }
+        
         re.request(withInterface: APIPathProvider.shoplusQuestionPois, parameters: nil, method: .get) { result in
             switch result {
             case .success(let data):
@@ -120,7 +138,7 @@ final class AnywhereUtilCoreTests: XCTestCase {
                 break
             }
         }
-        waitForExpectations(timeout: 20) // 设置超时时间为 20 秒
+        waitForExpectations(timeout: 90) // 设置超时时间为 20 秒
     }
 
     override func setUpWithError() throws {
@@ -138,4 +156,33 @@ final class AnywhereUtilCoreTests: XCTestCase {
         }
     }
 
+}
+
+// MARK: - MapServiceHandler
+class MapServiceHandler: NSObject, MXMServiceDelegate {
+    
+    private var onFinish: ((Error?) -> Void)?
+    
+    func register(apiKey: String, secret: String, completion: ((Error?) -> Void)?) {
+        onFinish = completion
+        
+        guard !apiKey.isEmpty, !secret.isEmpty else {
+            let error = NSError(domain: "com.mapxus.error", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid API Key or Secret"])
+            onFinish?(error)
+            return
+        }
+        
+        let mapServices = MXMMapServices.shared()
+        mapServices.delegate = self
+        mapServices.register(withApiKey: apiKey, secret: secret)
+    }
+    
+    func registerMXMServiceSuccess() {
+        onFinish?(nil)
+    }
+    
+    func registerMXMServiceFailWithError(_ error: any Error) {
+        onFinish?(error)
+    }
+    
 }

@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     private lazy var label = createLabel()
     private lazy var label2 = createLabel2()
     private lazy var button = createButton()
+    private lazy var networkbtn = createNetworkButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +48,10 @@ extension ViewController
         let appSettings = AppSettings.shared
         appSettings.currentTheme = theme
         
-        let tFont = ThemeFont(Theme.Font.font_heading_1.rawValue)
-        let tColor = ThemeColor(Theme.Color.titleTextColor.rawValue)
-        let tConrer = ThemeCorner(Theme.Corner.buttonShapeCorner.rawValue)
+        AppConfig.currentEnvironment = .prod
+//        let tFont = ThemeFont(Theme.Font.font_heading_1.rawValue)
+//        let tColor = ThemeColor(Theme.Color.titleTextColor.rawValue)
+//        let tConrer = ThemeCorner(Theme.Corner.buttonShapeCorner.rawValue)
         
     }
     
@@ -78,6 +80,14 @@ extension ViewController
             button.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20), // 与第一个 label 保持间距
             button.widthAnchor.constraint(equalToConstant: 200), // 按钮宽度
             button.heightAnchor.constraint(equalToConstant: 50)  // 按钮高度
+        ])
+        
+        view.addSubview(networkbtn)
+        NSLayoutConstraint.activate([
+            networkbtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            networkbtn.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20), // 与第一个 label 保持间距
+            networkbtn.widthAnchor.constraint(equalToConstant: 200), // 按钮宽度
+            networkbtn.heightAnchor.constraint(equalToConstant: 50)  // 按钮高度
         ])
         
     }
@@ -117,6 +127,17 @@ extension ViewController
         button.theme_setBackgroundColor(.badgeColor, for: .normal)
         return button
     }
+    private func createNetworkButton() -> UIButton {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Test Network", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 6
+        button.addTarget(self, action: #selector(clickNetworkButton(_:)), for: .touchUpInside)
+        button.theme_setTitleColor(.primaryBgColor, for: .normal)
+        button.theme_setBackgroundColor(.badgeColor, for: .normal)
+        return button
+    }
     
     @objc func clickButton(_ sender: UIButton) {
         let theme = AppSettings.shared.getTheme()
@@ -127,6 +148,47 @@ extension ViewController
 //        label.updateTheme()
 
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "themeDidChange"), object: nil)
+    }
+    
+    @objc func clickNetworkButton(_ sender: UIButton) {
+        let re = ProjectRequest.shared
+        re.onRegisterFinish = {
+            let handler = MapServiceHandler()
+            var registerSuccess = false
+
+            let semaphore = DispatchSemaphore(value: 0)
+            handler.register(apiKey: "bc635fc131d04e4fb541ab9e26924976", secret: "738fa012aeb0422189eccfb353d05698") { error in
+                if error == nil {
+                    registerSuccess = true
+                }
+                semaphore.signal() // 结束阻塞
+            }
+            semaphore.wait()
+            return registerSuccess
+        }
         
+        re.request(withInterface: APIPathProvider.shoplusQuestionPois, parameters: nil, method: .get) { result in
+            switch result {
+            case .success(let data):
+                print("*** data = \(data)")
+                break
+            case .failure(let task, let error):
+                print("*** error = \(error)")
+                break
+            }
+        }
+        
+    }
+    
+}
+
+enum APIPathProvider: APIPathProviderProtocol {
+    case shoplusQuestionPois // 示例：现有的 API 路径
+
+    func getPath() -> String {
+        switch self {
+        case .shoplusQuestionPois:
+            return ServerConfig.mapApiHost.serverHost() + "/api/v3/shoplus/question/pois"
+        }
     }
 }

@@ -31,7 +31,6 @@ Project common basic library, separate modules
   s.module_name  = 'AnywhereUtilCore'
 
   s.dependency "Kingfisher", "8.0.3"
-  s.dependency "MapxusBaseSDK", "7.0.0"
 #  s.dependency "AFNetworking/Serialization", "~> 4.0.0"
 #  s.dependency "AFNetworking/Security", "~> 4.0.0"
 #  s.dependency "AFNetworking/Reachability", "~> 4.0.0"

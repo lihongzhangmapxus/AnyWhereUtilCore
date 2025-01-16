@@ -13,6 +13,7 @@ target 'AnywhereUtil_Example' do
 
   # Pods for AnywhereUtilCore
   pod 'AnywhereUtilCore', :path => '../'
+  pod 'MapxusBaseSDK', '7.0.0'
 
   target 'AnywhereUtilCoreTests' do
     inherit! :search_paths

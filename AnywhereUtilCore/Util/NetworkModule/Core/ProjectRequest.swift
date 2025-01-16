@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import MapxusBaseSDK
 import AFNetworking
 
 public enum NetHTTPMethod: String {
@@ -62,8 +61,23 @@ public class ProjectRequest: NSObject {
     private let noAuthorizationDefault = RequestManager()
     private lazy var token: TokenManager = TokenManager()
     
+    public var onRegisterFinish: (() -> Bool)?
+    
     // 设置最大递归次数为4次
     private lazy var maxRetries = 4
+    
+    public override init() {
+        super.init()
+        AuthManager.shared.onRegisterFinish = { [weak self] in
+            guard let self = self else { return false }
+            let onRegister = onRegisterFinish?()
+            if onRegister == true {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
 
     @discardableResult
     public func request(withInterface interface: APIPathProviderProtocol, parameters: [String: Any]?, method: NetHTTPMethod, requestSerializer: NetRequestSerializer = .json,
