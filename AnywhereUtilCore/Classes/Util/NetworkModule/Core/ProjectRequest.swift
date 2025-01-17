@@ -125,7 +125,7 @@ public class ProjectRequest: NSObject {
     }
 
     @discardableResult
-    func request(noAuthorization interface: APIPathProviderProtocol, parameters: [String: Any]?, method: NetHTTPMethod,
+    public func request(noAuthorization interface: APIPathProviderProtocol, parameters: [String: Any]?, method: NetHTTPMethod,
         requestSerializer: NetRequestSerializer = .json, completed: @escaping((RequestResult<Data>) -> Void) ) -> URLSessionTask? {
         var path = interface.getPath()
         // 处理URL空格情况
@@ -151,7 +151,7 @@ public class ProjectRequest: NSObject {
     }
     
     // 定义一个泛型请求方法
-    class func performRequest<T: Decodable>(withInterface interface: APIPathProvider, parameters: [String: Any]?, jsonArrayKey: String = "result", method: NetHTTPMethod = .get, completion: @escaping (Result<T, Error>) -> Void) {
+    public class func performRequest<T: Decodable>(withInterface interface: APIPathProviderProtocol, parameters: [String: Any]?, jsonArrayKey: String = "result", method: NetHTTPMethod = .get, completion: @escaping (Result<T, Error>) -> Void) {
         ProjectRequest.shared.request(withInterface: interface, parameters: parameters, method: method) { result in
             switch result {
             case .success(let data):

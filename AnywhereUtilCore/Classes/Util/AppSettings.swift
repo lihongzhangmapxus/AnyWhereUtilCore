@@ -13,7 +13,7 @@ public class AppSettings {
     public var preferredLanguage: Language
 
     // 当前用户的主题
-    public var currentTheme: ThemeStruct = ThemeStruct()
+    public lazy var currentTheme: ThemeStruct = ThemeStruct()
     
     /// 初始化
     public init() {

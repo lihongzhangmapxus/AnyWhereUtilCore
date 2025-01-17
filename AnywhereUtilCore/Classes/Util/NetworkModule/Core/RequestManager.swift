@@ -21,6 +21,7 @@ final class RequestManager: RequestManagerProtocol
         }
         if let token = Keychain.password(forAccount: "MXMToken") {
             headers["Authorization"] = token
+            headers["token"] = token
         }
         configuration.httpAdditionalHeaders = headers
         var protocols: [AnyClass] = []
@@ -34,6 +35,7 @@ final class RequestManager: RequestManagerProtocol
         request.timeoutInterval = 30 // 设置超时时间为 30 秒
         if let token = Keychain.password(forAccount: "MXMToken") {
             request.setValue(token, forHTTPHeaderField: "Authorization")
+            request.setValue(token, forHTTPHeaderField: "token")
         }
         manager.requestSerializer = request
         manager.responseSerializer = AFHTTPResponseSerializer()
@@ -111,6 +113,7 @@ final class RequestManager: RequestManagerProtocol
         
         if let auth = authorization, !auth.isEmpty {
             manager.requestSerializer.setValue(auth, forHTTPHeaderField: "Authorization")
+            manager.requestSerializer.setValue(auth, forHTTPHeaderField: "token")
         }
 
         let successBlock: (URLSessionDataTask, Any) -> Void = { _, data in

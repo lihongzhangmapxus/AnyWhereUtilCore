@@ -109,9 +109,9 @@ extension DISkinTool
         var resourcePath = isBold ? SkinManager.shared.boldPath : SkinManager.shared.regularPath
         if resourcePath == nil {
             if isBold == true {
-                resourcePath = BundleCore.anywhereUtilBundle.path(forResource: "Ubuntu-Bold", ofType: "ttf")
+                resourcePath = BundleCore.utilBundle?.path(forResource: "Ubuntu-Bold", ofType: "ttf")
             } else {
-                resourcePath = BundleCore.anywhereUtilBundle.path(forResource: "Ubuntu-Regular", ofType: "ttf")
+                resourcePath = BundleCore.utilBundle?.path(forResource: "Ubuntu-Regular", ofType: "ttf")
             }
         }
         if let sdkFont = registerFontFrom(resourcePath, fontSize: fontSize) {

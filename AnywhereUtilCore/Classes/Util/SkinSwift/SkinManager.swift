@@ -44,10 +44,10 @@ final class SkinManager {
     static let shared = SkinManager()
     
     ///
-    var regularName: String? = "Ubuntu" {
+    var regularName: String? = "Ubuntu-Regular" {
         didSet {
             if regularName == nil {
-                regularName = "Ubuntu"
+                regularName = "Ubuntu-Regular"
             }
         }
     }

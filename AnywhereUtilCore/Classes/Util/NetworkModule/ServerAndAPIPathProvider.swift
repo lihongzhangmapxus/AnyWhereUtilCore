@@ -88,7 +88,7 @@ enum APIPathProvider: APIPathProviderProtocol {
     func getPath() -> String {
         switch self {
         case .shoplusQuestionPois:
-            return ServerConfig.mapApiHost.serverHost() + "/api/v3/shoplus/question/pois"
+            return ServerConfig.mapApiHost.host + "/api/v3/shoplus/question/pois"
         }
     }
 }

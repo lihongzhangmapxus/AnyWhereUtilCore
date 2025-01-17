@@ -28,3 +28,16 @@ public extension Double {
         Int(self)
     }
 }
+
+
+public extension CGFloat {
+    func toString(decimalPlaces: Int? = nil, roundingMode: NumberFormatter.RoundingMode = .halfUp) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.roundingMode = roundingMode
+        if let decimalPlaces = decimalPlaces {
+            numberFormatter.minimumFractionDigits = decimalPlaces
+            numberFormatter.maximumFractionDigits = decimalPlaces
+        }
+        return numberFormatter.string(from: NSNumber(value: self)) ?? ""
+    }
+}

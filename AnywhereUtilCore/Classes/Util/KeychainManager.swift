@@ -8,10 +8,10 @@
 import Foundation
 import Security
 
-struct Keychain {
+public struct Keychain {
 
     /// This is used to identifier your service
-    static let bundleIdentifier: String = {
+    public static let bundleIdentifier: String = {
         return Bundle.main.bundleIdentifier ?? ""
     }()
     
@@ -34,7 +34,7 @@ struct Keychain {
     ///   - service: The service, this is for kSecAttrService
     ///   - accessGroup: The access group, this is for kSecAttrAccessGroup
     /// - Returns: The password
-    static func password(forAccount account: String,
+    public static func password(forAccount account: String,
                          service: String = bundleIdentifier,
                          accessGroup: String = "") -> String? {
         guard !service.isEmpty && !account.isEmpty else {
