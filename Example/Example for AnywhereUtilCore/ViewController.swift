@@ -43,9 +43,9 @@ extension ViewController
         ])
         
         let theme = ThemeStruct(colorConfiguration: color, fontConfiguration: font, cornerConfiguration: corner)
-        let regularPath = Bundle.main.path(forResource: "Ubuntu", ofType: "ttf")
-        let boldPath = Bundle.main.path(forResource: "Ubuntu-Bold", ofType: "ttf")
-        theme.setupFontResources(withRegular: "Ubuntu", regularPath: regularPath, bold: "Ubuntu-Bold", boldPath: boldPath)
+//        let regularPath = Bundle.main.path(forResource: "Ubuntu", ofType: "ttf")
+//        let boldPath = Bundle.main.path(forResource: "Ubuntu-Bold", ofType: "ttf")
+//        theme.setupFontResources(withRegular: "Ubuntu", regularPath: regularPath, bold: "Ubuntu-Bold", boldPath: boldPath)
 
         
         appSettings.currentTheme = theme

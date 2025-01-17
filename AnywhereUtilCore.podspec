@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  version = '1.0.3'
+  version = '1.0.3.1'
 
   s.name             = 'AnywhereUtilCore'
   s.version          = version
@@ -22,10 +22,10 @@ Project common basic library, separate modules
   s.source       = { :http => "https://nexus3.mapxus.com/repository/dropin-ui-ios/#{version.to_s}/dropin-ui-sdk-ios.zip", :flatten => true }
   s.platform     = :ios, '13.0'
 
-  s.source_files = 'AnywhereUtilCore/**/*.{h,swift}'
+  s.source_files = 'AnywhereUtilCore/Classes/**/*'
   s.resource_bundles = {
       'AnywhereUtilCore' => [
-          'AnywhereUtilCore/Sources/**/*.{xcassets,ttf}'
+          'AnywhereUtilCore/Assets/**/*.{xcassets,ttf}'
       ]
   }
   
