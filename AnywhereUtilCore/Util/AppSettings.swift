@@ -8,16 +8,15 @@
 import Foundation
 
 public class AppSettings {
-    public static var shared = AppSettings()
 
     /// 当前用户的首选语言
     public var preferredLanguage: Language
 
-    // 当前用户Theme
-    public var currentTheme: ThemeStruct?// = ThemeStruct()
+    // 当前用户的主题
+    public var currentTheme: ThemeStruct = ThemeStruct()
     
     /// 初始化
-    private init() {
+    public init() {
         // 加载存储的语言，或者使用系统默认语言
         self.preferredLanguage = Self.resolveInitialLanguage()
     }
@@ -53,9 +52,9 @@ public class AppSettings {
     
     // 获取Theme
     public func getTheme() -> ThemeStruct {
-        guard let theme = currentTheme else {
-            return ThemeStruct()
-        }
-        return theme
+//        guard let theme = currentTheme else {
+//            return ThemeStruct()
+//        }
+        return currentTheme
     }
 }

@@ -22,7 +22,7 @@ final class AnywhereUtilCoreTests: XCTestCase {
         let str = "test".localized()
         print("** language = \(str)")
         
-        let appSettings = AppSettings.shared
+        let appSettings = AppSettings()
         print("** 当前首选语言: \(appSettings.preferredLanguage.code)")
         print("** 当前Language: \(appSettings.preferredLanguage)")
         Language.configureResourceBundleProvider {
@@ -30,23 +30,24 @@ final class AnywhereUtilCoreTests: XCTestCase {
         }
         
         // 更新为简体中文
-        AppSettings.shared.updatePreferredLanguage(to: .zh_Hans)
-        print("** 更新后的语言: \(AppSettings.shared.preferredLanguage.code)")
+        appSettings.updatePreferredLanguage(to: .zh_Hans)
+        print("** 更新后的语言: \(appSettings.preferredLanguage.code)")
         
         // 更新为系统语言
-        AppSettings.shared.updatePreferredLanguage(to: .system)
-        print("** 更新后的语言: \(AppSettings.shared.preferredLanguage.code)")
+        appSettings.updatePreferredLanguage(to: .system)
+        print("** 更新后的语言: \(appSettings.preferredLanguage.code)")
         
-        if let bundle = AppSettings.shared.preferredLanguage.bundle() {
+        if let bundle = appSettings.preferredLanguage.bundle() {
             let localizedString = bundle.localizedString(forKey: "test", value: nil, table: nil)
             print("** localizedString = \(localizedString)")
         }
     }
     
     func testUpdatePreferredLanguage() throws {
-        AppSettings.shared.updatePreferredLanguage(to: .zh_Hans)
-        print("** 更新后的语言: \(AppSettings.shared.preferredLanguage.code)")
-        let code = AppSettings.shared.preferredLanguage.code
+        let appSettings = AppSettings()
+        appSettings.updatePreferredLanguage(to: .zh_Hans)
+        print("** 更新后的语言: \(appSettings.preferredLanguage.code)")
+        let code = appSettings.preferredLanguage.code
         let mainBundle = Bundle.main
         guard let path = mainBundle.path(forResource: code, ofType: "lproj"),
               let bundle = Foundation.Bundle(path: path) else {
@@ -70,7 +71,7 @@ final class AnywhereUtilCoreTests: XCTestCase {
                 
         let theme = ThemeStruct(colorConfiguration: color, fontConfiguration: font, cornerConfiguration: corner)
         
-        let appSettings = AppSettings.shared
+        let appSettings = AppSettings()
         appSettings.currentTheme = theme
         
         let tFont = ThemeFont(Theme.Font.font_heading_1.rawValue)

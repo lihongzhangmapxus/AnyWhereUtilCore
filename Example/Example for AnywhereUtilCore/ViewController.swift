@@ -10,6 +10,8 @@ import AnywhereUtilCore
 
 class ViewController: UIViewController {
 
+    private lazy var appSettings = AppSettings()
+    
     private lazy var label = createLabel()
     private lazy var label2 = createLabel2()
     private lazy var button = createButton()
@@ -45,7 +47,7 @@ extension ViewController
         let boldPath = Bundle.main.path(forResource: "Ubuntu-Bold", ofType: "ttf")
         theme.setupFontResources(withRegular: "Ubuntu", regularPath: regularPath, bold: "Ubuntu-Bold", boldPath: boldPath)
 
-        let appSettings = AppSettings.shared
+        
         appSettings.currentTheme = theme
         
         AppConfig.currentEnvironment = .prod
@@ -140,7 +142,7 @@ extension ViewController
     }
     
     @objc func clickButton(_ sender: UIButton) {
-        let theme = AppSettings.shared.getTheme()
+        let theme = appSettings.getTheme()
         let skinPath = Bundle.main.path(forResource: "ThemeSkin", ofType: "plist")
         theme.setTheme(fromPlist: skinPath)
         

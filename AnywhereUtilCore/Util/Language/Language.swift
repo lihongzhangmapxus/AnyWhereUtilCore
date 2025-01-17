@@ -66,4 +66,29 @@ import Foundation
         let resolvedCode = LanguageFormat.preferredLanguage(with: preferredLanguage).code
         return loadBundle(for: resolvedCode, in: resourceBundle)
     }
+    
+    /// 获取 `.system` 模式下首选语言的枚举值
+    public func preferredLanguage() -> Language {
+        if self == .system, let preferredLanguageCode = Locale.preferredLanguages.first {
+            switch preferredLanguageCode {
+            case Constants.zhHant: return .zh_HK
+            case Constants.zhHans: return .zh_Hans
+            case Constants.en: return .en
+            case Constants.ja: return .ja
+            default: return .en // 默认值
+            }
+        }
+        return self
+    }
+    
+    /// 根据字符串返回对应的 Language 枚举
+    public static func from(string: String) -> Language {
+        switch string.lowercased() {
+        case Constants.zhHant.lowercased(), "hant", "zh_hk": return .zh_HK
+        case Constants.zhHans.lowercased(), "hans", "zh_cn": return .zh_Hans
+        case Constants.en.lowercased(), "english", "us", "uk": return .en
+        case Constants.ja.lowercased(), "japanese", "jp": return .ja
+        default: return .system // 默认返回 system
+        }
+    }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LanguageFormat
+public struct LanguageFormat
 {
     /// 语言映射表，用于从语言字符串映射到 `Language` 枚举
     static let languageMapping: [String: Language] = [
@@ -27,7 +27,7 @@ struct LanguageFormat
     }
     
     /// 获取首选语言（基于 Locale.preferredLanguages 或默认语言）
-    static func preferredLanguage(with defaultLanguage: String? = nil) -> Language {
+    public static func preferredLanguage(with defaultLanguage: String? = nil) -> Language {
         let preferredLang = defaultLanguage ?? Locale.preferredLanguages.first ?? "en"
         
         // 遍历映射表找到对应的语言
