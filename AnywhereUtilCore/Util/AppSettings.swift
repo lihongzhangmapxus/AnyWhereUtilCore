@@ -50,11 +50,8 @@ public class AppSettings {
 //        return UserDefaults.standard.string(forKey: "PreferredLanguage")
     }
     
-    // 获取Theme
-    public func getTheme() -> ThemeStruct {
-//        guard let theme = currentTheme else {
-//            return ThemeStruct()
-//        }
-        return currentTheme
+    // reset Theme
+    public func resetTheme() {
+        currentTheme = ThemeStruct()
     }
 }

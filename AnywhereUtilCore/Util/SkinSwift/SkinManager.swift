@@ -5,98 +5,6 @@
 
 import UIKit
 
-/// 默认皮肤包名（default）
-//private(set) var SKIN_DEFAULT_NAME: String = "default"
-//
-//private let DISkinCurrentSkinName: String = "DISkinCurrentSkinName"
-//
-//enum DISkinError: Error, LocalizedError {
-//    case DISkinNameIsNull
-//    case DISkinNameNotExists
-//
-//    var errorDescription: String? {
-//        switch self {
-//            case .DISkinNameIsNull:
-//                return "皮肤包名为空"
-//            case .DISkinNameNotExists:
-//                return "皮肤包不存在"
-//        }
-//    }
-//}
-//
-///// 换肤相关操作完成回调
-//typealias SkinActionCompletion = (_ result: Bool, _ msg: String) -> Void
-//
-//class SkinManager: NSObject {
-//    /// 获取默认皮肤包名
-//    static func defaultSkinName() -> String {
-//        return SkinManager.shared.defaultSkinName
-//    }
-//    private var defaultSkinName: String = SKIN_DEFAULT_NAME
-//
-//    /// 获取默认皮肤包信息
-//    private(set) var defaultSkinInfo: NSDictionary = [:]
-//
-//    /// 获取当前皮肤包名
-//    static func skinName() -> String {
-//        return SkinManager.shared.skinName
-//    }
-//    private lazy var skinName: String = SKIN_DEFAULT_NAME
-//
-//    /// 获取当前皮肤包信息
-//    static func skinInfo() -> NSDictionary? {
-//        return SkinManager.shared.skinInfo
-//    }
-//    private var skinInfo: NSDictionary?
-//
-//    ///
-//    var regularName: String?
-//    var regularPath: String?
-//
-//    ///
-//    var boldName: String?
-//    var boldPath: String?
-//
-//
-//    static let shared = SkinManager()
-//
-//    override init() {
-//        super.init()
-//        readSkinInfo()
-//    }
-//
-//    private func readSkinInfo() {
-//    }
-//
-//    static private func _dicFromSkinHistoryInfoWithKey(info: NSDictionary?, key: String) -> NSDictionary {
-//        guard let tmp = info?.object(forKey: key) as? NSDictionary else {
-//            return NSDictionary()
-//        }
-//        return tmp
-//    }
-//
-//
-//    /// 替换皮肤包配置信息
-//    func replaceSkinPlistInfo(_ skinPlistInfo: NSDictionary, skinName: String, _ completion: SkinActionCompletion?) {
-//        do {
-//            try _replaceSkinPlistInfoData(skinPlistInfo: skinPlistInfo, skinName: skinName)
-//            completion?(true, "")
-//        } catch let error {
-//            let msg = "error ：\(error.localizedDescription)，\n skin_plist：\(skinPlistInfo)"
-//            completion?(false, msg)
-//        }
-//    }
-//
-//    private func _replaceSkinPlistInfoData(skinPlistInfo: NSDictionary, skinName: String) throws {
-//        let tmp = SkinManager._dicFromSkinHistoryInfoWithKey(info: skinPlistInfo, key: skinName)
-//        if !tmp.allKeys.isEmpty {
-//            SkinManager.shared.defaultSkinInfo = tmp
-//            SkinManager.shared.skinInfo = tmp
-//        }
-//    }
-//}
-
-
 // MARK: - 定义错误
 enum SkinError: Error, LocalizedError {
     case skinNameIsNull
@@ -136,11 +44,23 @@ final class SkinManager {
     static let shared = SkinManager()
     
     ///
-    var regularName: String?
+    var regularName: String? = "Ubuntu" {
+        didSet {
+            if regularName == nil {
+                regularName = "Ubuntu"
+            }
+        }
+    }
     var regularPath: String?
 
     ///
-    var boldName: String?
+    var boldName: String? = "Ubuntu-Bold" {
+        didSet {
+            if boldName == nil {
+                boldName = "Ubuntu-Bold"
+            }
+        }
+    }
     var boldPath: String?
 
     private(set) var defaultSkinName: String = "default"

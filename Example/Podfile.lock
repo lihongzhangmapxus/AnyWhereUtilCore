@@ -8,7 +8,7 @@ PODS:
   - AFNetworking/Serialization (4.0.3)
   - AFNetworking/UIKit (4.0.3):
     - AFNetworking/NSURLSession
-  - AnywhereUtilCore (1.0.0):
+  - AnywhereUtilCore (1.0.2):
     - AFNetworking/UIKit (~> 4.0.0)
     - Kingfisher (= 8.0.3)
   - Kingfisher (8.0.3)
@@ -38,7 +38,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: a0ee5c746161b0ce8717dcf1057b4a530bcae72a
-  AnywhereUtilCore: c51b3ae84d4c96e699d8667f48a7c420b26c4ecd
+  AnywhereUtilCore: e6519d91cdd491915ecf7108a9479541b3733fb1
   Kingfisher: 0c23cefff7e8c69217b9ad8c54097a8be77b588f
   MapxusBaseSDK: eb43f3c64aa5ffd76934b22270dd06ace7e7970d
   YYModel: 30b7632ef7764dd1b40ae0875740e71c4393445f

@@ -92,7 +92,7 @@ public enum Theme: String {
         case font_caption
         case font_titlelabel
         
-        var defaultSize: CGFloat {
+        public var defaultSize: CGFloat {
             switch self {
             case .font_heading_1:
                 let font = ThemeFont(self.rawValue)

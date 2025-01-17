@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  version = '1.0.1'
+  version = '1.0.3'
 
   s.name             = 'AnywhereUtilCore'
   s.version          = version
@@ -24,7 +24,9 @@ Project common basic library, separate modules
 
   s.source_files = 'AnywhereUtilCore/**/*.{h,swift}'
   s.resource_bundles = {
-      'AnywhereUtilCore' => ['AnywhereUtilCore/**/*.{xcassets}']
+      'AnywhereUtilCore' => [
+          'AnywhereUtilCore/Sources/**/*.{xcassets,ttf}'
+      ]
   }
   
   s.frameworks = 'UIKit'

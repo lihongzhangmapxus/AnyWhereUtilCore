@@ -142,7 +142,7 @@ extension ViewController
     }
     
     @objc func clickButton(_ sender: UIButton) {
-        let theme = appSettings.getTheme()
+        let theme = appSettings.currentTheme
         let skinPath = Bundle.main.path(forResource: "ThemeSkin", ofType: "plist")
         theme.setTheme(fromPlist: skinPath)
         

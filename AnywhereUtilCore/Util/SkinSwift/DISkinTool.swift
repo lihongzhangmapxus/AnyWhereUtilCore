@@ -106,7 +106,14 @@ extension DISkinTool
         if let font = loadFontFrom(fontName: resourceName, fontSize: fontSize) {
             return font
         }
-        let resourcePath = isBold ? SkinManager.shared.boldPath : SkinManager.shared.regularPath
+        var resourcePath = isBold ? SkinManager.shared.boldPath : SkinManager.shared.regularPath
+        if resourcePath == nil {
+            if isBold == true {
+                resourcePath = BundleCore.anywhereUtilBundle.path(forResource: "Ubuntu-Bold", ofType: "ttf")
+            } else {
+                resourcePath = BundleCore.anywhereUtilBundle.path(forResource: "Ubuntu-Regular", ofType: "ttf")
+            }
+        }
         if let sdkFont = registerFontFrom(resourcePath, fontSize: fontSize) {
             return sdkFont
         }

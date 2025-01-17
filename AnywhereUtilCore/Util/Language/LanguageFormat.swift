@@ -19,7 +19,7 @@ public struct LanguageFormat
     ]
     
     /// 根据输入的 Language 或 Locale.preferredLanguages 返回具体的 Language
-    static func resolveLanguage(from inputLanguage: Language?) -> Language {
+    public static func resolveLanguage(from inputLanguage: Language?) -> Language {
         guard let selectedLanguage = inputLanguage else {
             return preferredLanguage()
         }
