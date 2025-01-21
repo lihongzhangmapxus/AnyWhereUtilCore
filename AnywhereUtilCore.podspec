@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.name             = 'AnywhereUtilCore'
   s.version          = version
   s.summary          = 'Anywhere project common basic library'
-
+  s.license      = { :type => 'BSD 3-Clause', :file => 'LICENSE' }
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
@@ -21,6 +21,9 @@ Project common basic library, separate modules
   s.author       = { 'Mapxus' => 'developer@maphive.io' }
   s.platform     = :ios, '13.0'
 
+  s.source           = { :git => 'https://github.com/lihongzhangmapxus/AnyWhereUtilCore.git', :tag => version.to_s }
+
+
   s.source_files = 'AnywhereUtilCore/Classes/**/*'
   s.resource_bundles = {
       'AnywhereUtilCore' => [
@@ -32,7 +35,7 @@ Project common basic library, separate modules
   s.module_name  = 'AnywhereUtilCore'
 
   s.dependency "Kingfisher", "8.0.3"
-  s.dependency "AFNetworking/UIKit", "~> 4.0.2"
+  s.dependency "MapxusBaseSDK", "7.0.0"
   
 end
 

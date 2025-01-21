@@ -8,7 +8,6 @@
 
 import UIKit
 import Kingfisher
-import AFNetworking
 
 public typealias afnImageSuccess = (_ image: UIImage?, _ error: Error?) -> Void
 
@@ -48,12 +47,6 @@ public extension UIImageView {
 //            self.image = placeholder
 //            completion?(nil, error)
 //        }
-    }
-    // afn
-    func setAfnUrl(with url: URL, placeholder: UIImage? = UIImage.getSdkImage(named: "placeholder_image"), finish: ((UIImage) -> Void)?) {
-        self.setImageWith(URLRequest(url: url), placeholderImage: placeholder) { req, rep, image in
-            finish?(image)
-        }
     }
 }
 

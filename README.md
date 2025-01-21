@@ -11,5 +11,5 @@ AnywhereUtilCore is a lightweight utility library for iOS development. It provid
 Add UtilCore to your project via CocoaPods:
 
 ```ruby
-pod 'AnywhereUtilCore', '~> 1.0.0'
+pod 'AnywhereUtilCore', '~> 1.0.5'
 ```
