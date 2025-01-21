@@ -2,7 +2,8 @@
 platform :ios, '13.0'
 
 source 'https://github.com/Mapxus/mapxusSpecs.git'
-source 'https://nexus3.mapxus.com/repository/cocoapods-proxy/'
+#source 'https://nexus3.mapxus.com/repository/cocoapods-proxy/'
+source 'https://github.com/CocoaPods/Specs.git'
 
 use_frameworks!
 
@@ -13,8 +14,9 @@ target 'AnywhereUtil_Example' do
 
   # Pods for AnywhereUtilCore
   pod 'AnywhereUtilCore', :path => '../'
+  pod 'AFNetworking', '~> 4.0.2', :subspecs=>['Serialization','Security', 'Reachability', 'NSURLSession', 'UIKit']
   pod 'MapxusBaseSDK', '7.0.0'
-
+  
   target 'AnywhereUtilCoreTests' do
     inherit! :search_paths
     # Pods for testing
