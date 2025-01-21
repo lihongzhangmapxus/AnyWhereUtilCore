@@ -21,9 +21,9 @@ public extension UIViewController {
     }
     
     /// 显示带跳转设置的提示框（可自定义跳转URL）
-    static func gotoAuthorization(settingsURL: URL = URL(string: UIApplication.openSettingsURLString)!) {
-        if UIApplication.shared.canOpenURL(settingsURL) {
-            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
-        }
-    }
+//    static func gotoAuthorization(settingsURL: URL = URL(string: UIApplicationOpenSettingsURLString)!) {
+//        if UIApplication.shared.canOpenURL(settingsURL) {
+//            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+//        }
+//    }
 }

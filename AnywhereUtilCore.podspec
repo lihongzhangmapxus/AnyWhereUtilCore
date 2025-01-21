@@ -18,7 +18,7 @@ Project common basic library, separate modules
                        DESC
 
   s.homepage         = 'https://www.mapxus.com'
-  s.author       = { 'Mapxus' => 'developer@maphive.io' }
+  s.author       = { 'Maxus' => 'developer@maphive.io' }
   s.platform     = :ios, '13.0'
 
   s.source           = { :git => 'https://github.com/lihongzhangmapxus/AnyWhereUtilCore.git', :tag => version.to_s }
