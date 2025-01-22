@@ -42,12 +42,13 @@ extension ViewController
             \.buttonShapeCorner : 10
         ])
         
-        let theme = ThemeStruct(colorConfiguration: color, fontConfiguration: font, cornerConfiguration: corner)
+        let theme = ThemeStruct()
+//        let theme = ThemeStruct(colorConfiguration: color, fontConfiguration: font, cornerConfiguration: corner)
 //        let regularPath = Bundle.main.path(forResource: "Ubuntu", ofType: "ttf")
 //        let boldPath = Bundle.main.path(forResource: "Ubuntu-Bold", ofType: "ttf")
 //        theme.setupFontResources(withRegular: "Ubuntu", regularPath: regularPath, bold: "Ubuntu-Bold", boldPath: boldPath)
-
-        
+        let themePath = Bundle.main.path(forResource: "ThemeColor", ofType: "plist")
+        theme.setTheme(fromPlist: themePath)
         appSettings.currentTheme = theme
         
         AppConfig.currentEnvironment = .prod

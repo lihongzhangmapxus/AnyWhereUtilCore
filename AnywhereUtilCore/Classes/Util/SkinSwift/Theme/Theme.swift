@@ -343,11 +343,32 @@ public enum Theme: String {
         SkinManager.shared.replaceSkinInfo(skinName: "default", skinPlistInfo: defaultInfo)
     }
     
-    // Load theme from a plist file
-    public func setTheme(fromPlist path: String?, skinName: String = "default") {
+    /// Configures the app theme by loading settings from a specified plist file.
+    /// - Parameters:
+    ///   - path: The file path to the plist containing theme configurations. If `nil` or invalid, the theme is reset to the default settings.
+    ///   - skinName: The name of the theme (skin) to apply. Defaults to "default".
+    ///
+    /// The method performs the following operations:
+    /// - Loads color, corner radius, and font configurations for the specified theme.
+    /// - Updates internal dictionaries (`colorDict`, `cornerDict`, and `fontDict`) with the parsed values.
+    /// - Applies the parsed theme configuration to the `SkinManager`, ensuring the app reflects the updated theme settings.
+    ///
+    /// **Behavior**:
+    /// - If the `path` is `nil` or the plist file cannot be parsed correctly, the method resets the theme to default settings.
+    /// - Only the specified `skinName` is applied; other configurations in the plist are ignored.
+    ///
+    /// This method allows the app to dynamically switch between themes and customize the user interface appearance.
+    public func setTheme(fromPlist path: String?, skinName: String? = nil) {
         guard let plistPath = path,
-              let plistContent = NSDictionary(contentsOfFile: plistPath) as? [String: Any],
-              let skinContent = plistContent[skinName] as? [String: Any] else {
+              let plistContent = NSDictionary(contentsOfFile: plistPath) as? [String: Any] else {
+            resetToDefault()
+            return
+        }
+        
+        // 如果 skinName 为 nil，则直接使用 plistContent，否则使用指定的 skinName 内容
+        let skinContent = skinName != nil ? plistContent[skinName!] as? [String: Any] : plistContent
+
+        guard let skinContent = skinContent else {
             resetToDefault()
             return
         }
@@ -373,8 +394,8 @@ public enum Theme: String {
             Theme.cornerCase.rawValue: cornerDict,
             Theme.fontCase.rawValue: fontDict
         ]
-        defaultInfo[skinName] = updatedSkinInfo
-        SkinManager.shared.replaceSkinInfo(skinName: skinName, skinPlistInfo: defaultInfo)
+        defaultInfo[skinName ?? "default"] = updatedSkinInfo
+        SkinManager.shared.replaceSkinInfo(skinName: skinName ?? "default", skinPlistInfo: defaultInfo)
     }
  
     
