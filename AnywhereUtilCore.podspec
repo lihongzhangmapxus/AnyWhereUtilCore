@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  version = '1.0.5'
+  version = '1.0.6'
 
   s.name             = 'AnywhereUtilCore'
   s.version          = version
@@ -24,7 +24,6 @@ Project common basic library, separate modules
   s.source           = { :git => 'https://github.com/lihongzhangmapxus/AnyWhereUtilCore.git', :tag => version.to_s }
 
   s.requires_arc = true
-
 
   s.source_files = 'AnywhereUtilCore/Classes/**/*'
   s.resource_bundles = {
