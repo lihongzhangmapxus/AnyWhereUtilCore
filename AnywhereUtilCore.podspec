@@ -23,6 +23,8 @@ Project common basic library, separate modules
 
   s.source           = { :git => 'https://github.com/lihongzhangmapxus/AnyWhereUtilCore.git', :tag => version.to_s }
 
+  s.requires_arc = true
+
 
   s.source_files = 'AnywhereUtilCore/Classes/**/*'
   s.resource_bundles = {
@@ -41,5 +43,13 @@ Project common basic library, separate modules
 
   s.dependency "Kingfisher", "8.0.3"
   
+
+
+  # 修复模拟器和优化级别的警告
+  s.swift_version = '5.0'
+  s.pod_target_xcconfig = {
+    'IPHONEOS_DEPLOYMENT_TARGET' => '13.0',
+  }
+
 end
 

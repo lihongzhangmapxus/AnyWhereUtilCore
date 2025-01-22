@@ -16,37 +16,34 @@ import UIKit
  */
 public extension UIColor {
     class func hexColor(_ hexadecimal: String) -> UIColor {
-        var cstr = hexadecimal.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased() as NSString
-        if cstr.length < 6 {
-            return UIColor.clear
+        // 去除空格和换行符并转换为大写
+        var cstr = hexadecimal.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        // 检查字符串长度
+        guard cstr.count >= 6 else { return UIColor.clear }
+        
+        // 去掉前缀 "0x" 或 "#"
+        if cstr.hasPrefix("0X") || cstr.hasPrefix("0x") {
+            cstr.removeFirst(2)
+        } else if cstr.hasPrefix("#") {
+            cstr.removeFirst()
         }
-        if cstr.hasPrefix("0x") {
-            cstr = cstr.substring(from: 2) as NSString
+        
+        // 确保字符串长度为 6
+        guard cstr.count == 6 else { return UIColor.clear }
+        
+        // 转换为 RGB 值
+        let r, g, b: CGFloat
+        let scanner = Scanner(string: cstr)
+        var hexNumber: UInt64 = 0
+        if scanner.scanHexInt64(&hexNumber) {
+            r = CGFloat((hexNumber & 0xFF0000) >> 16) / 255.0
+            g = CGFloat((hexNumber & 0x00FF00) >> 8) / 255.0
+            b = CGFloat(hexNumber & 0x0000FF) / 255.0
+            return UIColor(red: r, green: g, blue: b, alpha: 1.0)
         }
-        if cstr.hasPrefix("#") {
-            cstr = cstr.substring(from: 1) as NSString
-        }
-        if cstr.length != 6 {
-            return UIColor.clear
-        }
-        var range = NSRange.init()
-        range.location = 0
-        range.length = 2
-        // r
-        let rStr = cstr.substring(with: range)
-        // g
-        range.location = 2
-        let gStr = cstr.substring(with: range)
-        // b
-        range.location = 4
-        let bStr = cstr.substring(with: range)
-        var r: UInt32 = 0x0
-        var g: UInt32 = 0x0
-        var b: UInt32 = 0x0
-        Scanner.init(string: rStr).scanHexInt32(&r)
-        Scanner.init(string: gStr).scanHexInt32(&g)
-        Scanner.init(string: bStr).scanHexInt32(&b)
-        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
+        
+        return UIColor.clear
     }
 
     /// UIColor 转 UIImage
