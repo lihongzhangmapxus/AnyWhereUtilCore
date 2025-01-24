@@ -40,7 +40,9 @@ final class DISkinTool {
     private func fetchColor(alpha: CGFloat) -> UIColor? {
         let skinInfo = SkinManager.shared.currentSkinInfo
         let packValue = skinPackValue(skinInfo as NSDictionary, key: key, type: valueType, skinName: SkinManager.currentSkinName())
-        guard let colorHex = packValue as? String else { return nil }
+        guard let colorHex = packValue as? String, !colorHex.isEmpty else {
+            return nil
+        }
         let color = UIColor.hexColor(colorHex)
         return alpha < 1.0 ? color.withAlphaComponent(alpha) : color
     }
