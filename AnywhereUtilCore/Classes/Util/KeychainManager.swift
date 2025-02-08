@@ -64,7 +64,7 @@ public struct Keychain {
     ///   - service: The service, this is for kSecAttrService
     ///   - accessGroup: The access group, this is for kSecAttrAccessGroup
     /// - Returns: True if the password can be set successfully
-    @discardableResult static func setPassword(_ password: String, forAccount account: String, service: String = bundleIdentifier, accessGroup: String = "") -> Bool {
+    @discardableResult public static func setPassword(_ password: String, forAccount account: String, service: String = bundleIdentifier, accessGroup: String = "") -> Bool {
         guard !service.isEmpty && !account.isEmpty else {
             return false
         }
@@ -89,7 +89,7 @@ public struct Keychain {
     ///   - account: The account, this is for kSecAttrAccount
     ///   - service: The service, this is for kSecAttrService
     /// - Returns: True if the password can be safely deleted
-    @discardableResult static func deletePassword(forAccount account: String, service: String = bundleIdentifier, accessGroup: String = "") -> Bool {
+    @discardableResult public static func deletePassword(forAccount account: String, service: String = bundleIdentifier, accessGroup: String = "") -> Bool {
         guard !service.isEmpty && !account.isEmpty else {
             return false
         }

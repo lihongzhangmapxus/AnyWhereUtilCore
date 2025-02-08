@@ -9,19 +9,14 @@
 import Foundation
 import AFNetworking
 
-final class RequestManager: RequestManagerProtocol
+public class RequestManager: RequestManagerProtocol
 {
-    private var authorization: String?
-    private var manager: AFHTTPSessionManager = {
+    internal var manager: AFHTTPSessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30.0
         var headers: Dictionary = [:]
         if let additionalHeaders = configuration.httpAdditionalHeaders {
             headers = additionalHeaders
-        }
-        if let token = Keychain.password(forAccount: "MXMToken") {
-            headers["Authorization"] = token
-            headers["token"] = token
         }
         configuration.httpAdditionalHeaders = headers
         var protocols: [AnyClass] = []
@@ -33,10 +28,6 @@ final class RequestManager: RequestManagerProtocol
         let manager = AFHTTPSessionManager(sessionConfiguration: configuration)
         let request = AFHTTPRequestSerializer()
         request.timeoutInterval = 30 // 设置超时时间为 30 秒
-        if let token = Keychain.password(forAccount: "MXMToken") {
-            request.setValue(token, forHTTPHeaderField: "Authorization")
-            request.setValue(token, forHTTPHeaderField: "token")
-        }
         manager.requestSerializer = request
         manager.responseSerializer = AFHTTPResponseSerializer()
         return manager
@@ -48,10 +39,6 @@ final class RequestManager: RequestManagerProtocol
         return manager
     }()
     
-    func setSerializer(with token: String) {
-        authorization = token
-    }
-
     @discardableResult
     func noAuthorizationManagerRequest(withInterface interface: String, parameters: [String: Any]?, method: NetHTTPMethod, requestSerializer: NetRequestSerializer, callBack: @escaping ((RequestResult<Data>) -> Void)) -> URLSessionTask? {
         switch requestSerializer {
@@ -102,19 +89,6 @@ final class RequestManager: RequestManagerProtocol
         requestSerializer: NetRequestSerializer,
         callBack: @escaping ((RequestResult<Data>) -> Void)
     ) -> URLSessionTask? {
-        switch requestSerializer {
-        case .http:
-            manager.requestSerializer = AFHTTPRequestSerializer()
-        case .json:
-            manager.requestSerializer = AFJSONRequestSerializer()
-        case .propertyList:
-            manager.requestSerializer = AFPropertyListRequestSerializer()
-        }
-        
-        if let auth = authorization, !auth.isEmpty {
-            manager.requestSerializer.setValue(auth, forHTTPHeaderField: "Authorization")
-            manager.requestSerializer.setValue(auth, forHTTPHeaderField: "token")
-        }
 
         let successBlock: (URLSessionDataTask, Any) -> Void = { _, data in
             callBack(.success(data as? Data))
