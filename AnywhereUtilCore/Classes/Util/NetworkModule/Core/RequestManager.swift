@@ -11,7 +11,7 @@ import AFNetworking
 
 public class RequestManager: RequestManagerProtocol
 {
-    internal var manager: AFHTTPSessionManager = {
+    public var manager: AFHTTPSessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30.0
         var headers: Dictionary = [:]
