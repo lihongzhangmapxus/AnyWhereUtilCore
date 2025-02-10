@@ -60,7 +60,7 @@ public enum Theme: String {
         case buildingSelectorTextColor
         case buildingSelectorBgColor
         case buildingSelectorBorderColor
-        case buildingSelectorDisableTextColour
+        case buildingSelectorDisableTextColor
         case buildingSelectorDisableBgColor
         case buildingSelectorDisableBorderColor
     }
@@ -189,7 +189,7 @@ public enum Theme: String {
             buildingSelectorTextColor: colorConfig.buildingSelectorTextColor,
             buildingSelectorBgColor: colorConfig.buildingSelectorBgColor,
             buildingSelectorBorderColor: colorConfig.buildingSelectorBorderColor,
-            buildingSelectorDisableTextColour: colorConfig.buildingSelectorDisableTextColor,
+            buildingSelectorDisableTextColor: colorConfig.buildingSelectorDisableTextColor,
             buildingSelectorDisableBgColor: colorConfig.buildingSelectorDisableBgColor,
             buildingSelectorDisableBorderColor: colorConfig.buildingSelectorDisableBorderColor
         )
@@ -254,7 +254,7 @@ public enum Theme: String {
                             buildingSelectorTextColor: String,
                             buildingSelectorBgColor: String,
                             buildingSelectorBorderColor: String,
-                            buildingSelectorDisableTextColour: String,
+                            buildingSelectorDisableTextColor: String,
                             buildingSelectorDisableBgColor: String,
                             buildingSelectorDisableBorderColor: String
     ) {
@@ -302,7 +302,7 @@ public enum Theme: String {
             Theme.Color.buildingSelectorTextColor.rawValue: buildingSelectorTextColor,
             Theme.Color.buildingSelectorBgColor.rawValue: buildingSelectorBgColor,
             Theme.Color.buildingSelectorBorderColor.rawValue: buildingSelectorBorderColor,
-            Theme.Color.buildingSelectorDisableTextColour.rawValue: buildingSelectorDisableTextColour,
+            Theme.Color.buildingSelectorDisableTextColor.rawValue: buildingSelectorDisableTextColor,
             Theme.Color.buildingSelectorDisableBgColor.rawValue: buildingSelectorDisableBgColor,
             Theme.Color.buildingSelectorDisableBorderColor.rawValue: buildingSelectorDisableBorderColor
         ]

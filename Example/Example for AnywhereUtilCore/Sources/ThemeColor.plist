@@ -106,7 +106,7 @@
 		<string>#262626</string>
 		<key>buildingSelectorBorderColor</key>
 		<string>#262626</string>
-		<key>buildingSelectorDisableTextColour</key>
+		<key>buildingSelectorDisableTextColor</key>
 		<string>#8c8c8c</string>
 		<key>buildingSelectorDisableBgColor</key>
 		<string>#262626</string>
