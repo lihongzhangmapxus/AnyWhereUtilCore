@@ -75,11 +75,11 @@ public class ProjectRequest: NSObject {
                  completed: @escaping((RequestResult<Data>) -> Void)) -> URLSessionTask? {
         var task: URLSessionTask?
 
-        var path = interface.getPath()
+        let path = interface.getPath()
         // 处理URL特殊字符
-        if let encodedStr = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            path = encodedStr
-        }
+//        if let encodedStr = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+//            path = encodedStr
+//        }
         task = requestManager.managerRequest(withInterface: path, parameters: parameters, method: method, requestSerializer: requestSerializer) { result in
             switch result {
             case .success(let data):
