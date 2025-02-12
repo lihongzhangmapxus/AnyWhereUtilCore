@@ -26,7 +26,7 @@ public class RequestManager: RequestManagerProtocol
         }
         configuration.protocolClasses = protocols
         let manager = AFHTTPSessionManager(sessionConfiguration: configuration)
-        let request = AFHTTPRequestSerializer()
+        let request = AFJSONRequestSerializer()
         request.timeoutInterval = 30 // 设置超时时间为 30 秒
         manager.requestSerializer = request
         manager.responseSerializer = AFHTTPResponseSerializer()

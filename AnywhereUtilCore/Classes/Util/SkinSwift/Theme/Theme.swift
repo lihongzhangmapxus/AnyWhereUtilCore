@@ -372,19 +372,21 @@ public enum Theme: String {
             resetToDefault()
             return
         }
+        let key = skinName ?? "default"
+        let content = skinContent[key] as? [String : Any]
 
         // 加载颜色配置
-        if let colorConfig = skinContent[Theme.normal.rawValue] as? [String: String] {
+        if let tmp = content, let colorConfig = tmp[Theme.normal.rawValue] as? [String: String] {
             colorDict = colorConfig
         }
 
         // 加载圆角配置
-        if let cornerConfig = skinContent[Theme.cornerCase.rawValue] as? [String: CGFloat] {
+        if let tmp = content, let cornerConfig = tmp[Theme.cornerCase.rawValue] as? [String: CGFloat] {
             cornerDict = cornerConfig
         }
 
         // 加载字体配置
-        if let fontConfig = skinContent[Theme.fontCase.rawValue] as? [String: CGFloat] {
+        if let tmp = content, let fontConfig = tmp[Theme.fontCase.rawValue] as? [String: CGFloat] {
             fontDict = fontConfig
         }
 
@@ -394,7 +396,7 @@ public enum Theme: String {
             Theme.cornerCase.rawValue: cornerDict,
             Theme.fontCase.rawValue: fontDict
         ]
-        defaultInfo[skinName ?? "default"] = updatedSkinInfo
+        defaultInfo[key] = updatedSkinInfo
         SkinManager.shared.replaceSkinInfo(skinName: skinName ?? "default", skinPlistInfo: defaultInfo)
     }
  
