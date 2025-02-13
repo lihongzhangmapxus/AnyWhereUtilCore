@@ -7,6 +7,56 @@
 
 import Foundation
 
+@objc public enum ThemeColorKey: Int {
+    case backgroundColor
+    case primaryBgColor
+    case primaryBgDisableColor
+    case primaryContentColor
+    case primaryContentDisableColor
+    case secondaryBgColor
+    case secondaryContentColor
+    case searchBgColor
+    case searchContentColor
+    // tag
+    case tagBgSelected
+    case tagBgUnselected
+    case tagContentSelected
+    case tagContentUnselected
+    // floor
+    case floorBgSelected
+    case floorBgUnselected
+    case floorContentSelected
+    case badgeColor
+    // input Field
+    case inputFieldPlaceholder
+    case inputFieldTextColor
+    case inputFieldBgColor
+    case inputFieldBorder
+    case inputFieldBorderUnfocused
+    // Business Status
+    case openColor
+    case closeColor
+    case upcomingColor
+    // text color
+    case commonTextColor
+    case titleTextColor
+    case subTextColor
+
+    // Line colors
+    case outdoorLineColor
+    case indoorLineColor
+    case dashLineColor
+
+    // Building Selector
+    case buildingSelectorTextColor
+    case buildingSelectorBgColor
+    case buildingSelectorBorderColor
+    case buildingSelectorDisableTextColor
+    case buildingSelectorDisableBgColor
+    case buildingSelectorDisableBorderColor
+    
+}
+
 @objcMembers public class ThemeColorConfiguration: NSObject {
     // 定义属性，支持默认值
     public var backgroundColor: String = "#ffffff"
@@ -108,6 +158,98 @@ import Foundation
             }
         }
     }
+    
+    // 支持局部初始化：通过字典传入属性名称和值
+    @objc public func setOverrides(with colorValue: [NSNumber: String]) {
+        for (key, value) in colorValue {
+            switch key.intValue {  // 使用 `intValue` 获取枚举的原始值
+            case ThemeColorKey.backgroundColor.rawValue:
+                backgroundColor = value
+            case ThemeColorKey.primaryBgColor.rawValue:
+                primaryBgColor = value
+            case ThemeColorKey.primaryBgDisableColor.rawValue:
+                primaryBgDisableColor = value
+            case ThemeColorKey.primaryContentColor.rawValue:
+                primaryContentColor = value
+            case ThemeColorKey.primaryContentDisableColor.rawValue:
+                primaryContentDisableColor = value
+            case ThemeColorKey.secondaryBgColor.rawValue:
+                secondaryBgColor = value
+            case ThemeColorKey.secondaryContentColor.rawValue:
+                secondaryContentColor = value
+            case ThemeColorKey.searchBgColor.rawValue:
+                searchBgColor = value
+            case ThemeColorKey.searchContentColor.rawValue:
+                searchContentColor = value
+            case ThemeColorKey.tagBgSelected.rawValue:
+                tagBgSelected = value
+            case ThemeColorKey.tagBgUnselected.rawValue:
+                tagBgUnselected = value
+            case ThemeColorKey.tagContentSelected.rawValue:
+                tagContentSelected = value
+            case ThemeColorKey.tagContentUnselected.rawValue:
+                tagContentUnselected = value
+            case ThemeColorKey.floorBgSelected.rawValue:
+                floorBgSelected = value
+            case ThemeColorKey.floorBgUnselected.rawValue:
+                floorBgUnselected = value
+            case ThemeColorKey.floorContentSelected.rawValue:
+                floorContentSelected = value
+            case ThemeColorKey.badgeColor.rawValue:
+                badgeColor = value
+            case ThemeColorKey.inputFieldPlaceholder.rawValue:
+                inputFieldPlaceholder = value
+            case ThemeColorKey.inputFieldTextColor.rawValue:
+                inputFieldTextColor = value
+            case ThemeColorKey.inputFieldBgColor.rawValue:
+                inputFieldBgColor = value
+            case ThemeColorKey.inputFieldBorder.rawValue:
+                inputFieldBorder = value
+            case ThemeColorKey.inputFieldBorderUnfocused.rawValue:
+                inputFieldBorderUnfocused = value
+            case ThemeColorKey.openColor.rawValue:
+                openColor = value
+            case ThemeColorKey.closeColor.rawValue:
+                closeColor = value
+            case ThemeColorKey.upcomingColor.rawValue:
+                upcomingColor = value
+            case ThemeColorKey.commonTextColor.rawValue:
+                commonTextColor = value
+            case ThemeColorKey.titleTextColor.rawValue:
+                titleTextColor = value
+            case ThemeColorKey.subTextColor.rawValue:
+                subTextColor = value
+            case ThemeColorKey.outdoorLineColor.rawValue:
+                outdoorLineColor = value
+            case ThemeColorKey.indoorLineColor.rawValue:
+                indoorLineColor = value
+            case ThemeColorKey.dashLineColor.rawValue:
+                dashLineColor = value
+            case ThemeColorKey.buildingSelectorTextColor.rawValue:
+                buildingSelectorTextColor = value
+            case ThemeColorKey.buildingSelectorBgColor.rawValue:
+                buildingSelectorBgColor = value
+            case ThemeColorKey.buildingSelectorBorderColor.rawValue:
+                buildingSelectorBorderColor = value
+            case ThemeColorKey.buildingSelectorDisableTextColor.rawValue:
+                buildingSelectorDisableTextColor = value
+            case ThemeColorKey.buildingSelectorDisableBgColor.rawValue:
+                buildingSelectorDisableBgColor = value
+            case ThemeColorKey.buildingSelectorDisableBorderColor.rawValue:
+                buildingSelectorDisableBorderColor = value
+            default: break
+            }
+        }
+    }
+}
+
+// 枚举定义
+@objc public enum ThemeFontKey: Int {
+    case fontHeading1
+    case fontHeading2
+    case fontBody1
+    case fontCaption
+    case fontTitleLabel
 }
 
 @objcMembers public class ThemeFontConfiguration: NSObject {
@@ -122,7 +264,7 @@ import Foundation
         super.init()
     }
     
-    // 支持局部初始化
+    // 支持局部初始化：用于Swift的版本
     public init(overrides: [PartialKeyPath<ThemeFontConfiguration>: CGFloat]) {
         super.init()
         for (keyPath, value) in overrides {
@@ -136,8 +278,37 @@ import Foundation
             }
         }
     }
+    
+    // 支持局部初始化：通过字典传入属性名称和值
+    @objc public func setOverrides(with fontValues: [NSNumber: NSNumber]) {
+        for (key, value) in fontValues {
+            switch key.intValue {  // 使用 `intValue` 获取枚举的原始值
+            case ThemeFontKey.fontHeading1.rawValue:
+                fontHeading1 = CGFloat(value.floatValue)
+            case ThemeFontKey.fontHeading2.rawValue:
+                fontHeading2 = CGFloat(value.floatValue)
+            case ThemeFontKey.fontBody1.rawValue:
+                fontBody1 = CGFloat(value.floatValue)
+            case ThemeFontKey.fontCaption.rawValue:
+                fontCaption = CGFloat(value.floatValue)
+            case ThemeFontKey.fontTitleLabel.rawValue:
+                fontTitleLabel = CGFloat(value.floatValue)
+            default:
+                break
+            }
+        }
+    }
 }
 
+
+// 枚举定义
+@objc public enum ThemeCornerKey: Int {
+    case buttonShapeCorner
+    case imageShapeCorner
+    case searchBarShapeCorner
+    case bottomSheetShapeCorner
+}
+ 
 @objcMembers public class ThemeCornerConfiguration: NSObject {
     // 定义圆角大小属性，支持默认值
     public var buttonShapeCorner: CGFloat = 8
@@ -149,7 +320,7 @@ import Foundation
         super.init()
     }
     
-    // 支持局部初始化
+    // 支持局部初始化：用于Swift的版本
     public init(overrides: [PartialKeyPath<ThemeCornerConfiguration>: CGFloat]) {
         super.init()
         for (keyPath, value) in overrides {
@@ -159,6 +330,24 @@ import Foundation
             case \.searchBarShapeCorner: searchBarShapeCorner = value
             case \.bottomSheetShapeCorner: bottomSheetShapeCorner = value
             default: break
+            }
+        }
+    }
+    
+    // 支持局部初始化：通过字典传入属性名称和值
+    @objc public func setOverrides(with cornerRadiusValues: [NSNumber: NSNumber]) {
+        for (key, value) in cornerRadiusValues {
+            switch key.intValue {  // 使用 `intValue` 获取枚举的原始值
+            case ThemeCornerKey.buttonShapeCorner.rawValue:
+                buttonShapeCorner = CGFloat(value.floatValue)
+            case ThemeCornerKey.imageShapeCorner.rawValue:
+                imageShapeCorner = CGFloat(value.floatValue)
+            case ThemeCornerKey.searchBarShapeCorner.rawValue:
+                searchBarShapeCorner = CGFloat(value.floatValue)
+            case ThemeCornerKey.bottomSheetShapeCorner.rawValue:
+                bottomSheetShapeCorner = CGFloat(value.floatValue)
+            default:
+                break
             }
         }
     }
