@@ -39,18 +39,35 @@ import Foundation
     public static func configureResourceBundleProvider(_ provider: @escaping () -> Bundle?) {
         resourceBundleProvider = provider
     }
+    
+    // 使用字典来缓存每种语言的 Bundle
+    private static var cachedBundles: [String: Bundle] = [:]
 
     /// 获取对应语言的资源 Bundle
     public func bundle() -> Bundle? {
+        let languageCode = self.code
+        
+        // 如果缓存中有对应语言的 Bundle，直接返回
+        if let cachedBundle = Self.cachedBundles[languageCode] {
+            return cachedBundle
+        }
+
+        // 否则，加载新的 Bundle
         guard let resourceBundle = Self.resourceBundleProvider?() else {
             return nil
         }
 
-        if code == Constants.system {
-            return preferredSystemBundle(in: resourceBundle)
+        let bundle: Bundle?
+        if languageCode == Constants.system {
+            bundle = preferredSystemBundle(in: resourceBundle)
+        } else {
+            bundle = loadBundle(for: languageCode, in: resourceBundle)
         }
-
-        return loadBundle(for: code, in: resourceBundle)
+        // 缓存新的 Bundle
+        if let newBundle = bundle {
+            Self.cachedBundles[languageCode] = newBundle
+        }
+        return bundle
     }
 
     /// 加载指定语言的 Bundle
@@ -66,7 +83,12 @@ import Foundation
         let resolvedCode = LanguageFormat.preferredLanguage(with: preferredLanguage).code
         return loadBundle(for: resolvedCode, in: resourceBundle)
     }
-    
+
+    /// 清除缓存（如果需要）
+    public static func clearCache() {
+        cachedBundles.removeAll()
+    }
+
     /// 获取 `.system` 模式下首选语言的枚举值
     public func preferredLanguage() -> Language {
         if self == .system, let preferredLanguageCode = Locale.preferredLanguages.first {
