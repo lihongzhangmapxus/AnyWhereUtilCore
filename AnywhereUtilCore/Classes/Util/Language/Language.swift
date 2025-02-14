@@ -44,11 +44,11 @@ import Foundation
     private static var cachedBundles: [String: Bundle] = [:]
 
     /// 获取对应语言的资源 Bundle
-    public func bundle() -> Bundle? {
+    public func bundle(with key: String = "") -> Bundle? {
         let languageCode = self.code
-        
+        let cacheKey = key + "_" + self.code
         // 如果缓存中有对应语言的 Bundle，直接返回
-        if let cachedBundle = Self.cachedBundles[languageCode] {
+        if let cachedBundle = Self.cachedBundles[cacheKey] {
             return cachedBundle
         }
 
@@ -65,7 +65,7 @@ import Foundation
         }
         // 缓存新的 Bundle
         if let newBundle = bundle {
-            Self.cachedBundles[languageCode] = newBundle
+            Self.cachedBundles[cacheKey] = newBundle
         }
         return bundle
     }
