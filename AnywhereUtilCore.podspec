@@ -40,10 +40,6 @@ Project common basic library, separate modules
   s.dependency "AFNetworking/NSURLSession", "~> 4.0.0"
   s.dependency "AFNetworking/UIKit", "~> 4.0.0"
 
-  s.dependency "Kingfisher", "8.0.3"
-  
-
-
   # 修复模拟器和优化级别的警告
   s.swift_version = '5.0'
   s.pod_target_xcconfig = {

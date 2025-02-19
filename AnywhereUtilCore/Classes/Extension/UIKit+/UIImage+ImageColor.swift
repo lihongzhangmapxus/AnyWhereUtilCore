@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+import AFNetworking
 
 public extension UIImage {
     /// 实例方法 转换UIImage 颜色
@@ -254,36 +254,33 @@ public extension UIImage {
 
 public extension UIImage {
     func applyGaussianBlur(with blurAmount: Double, cacheKey: String, complete: ((UIImage?) -> Void)?) {
-        ImageCache.default.retrieveImageInDiskCache(forKey: cacheKey) { result in
-            switch result {
-            case .success(let success):
-                if let img = success {
-                    complete?(img)
-                } else {
-                    guard let ciImage = CIImage(image: self) else {
-                        complete?(self)
-                        return
-                    }
-                    let filter = CIFilter(name: "CIGaussianBlur")
-                    filter?.setValue(ciImage, forKey: kCIInputImageKey)
-                    filter?.setValue(blurAmount, forKey: kCIInputRadiusKey)
-
-                    guard let outputImage = filter?.outputImage else {
-                        complete?(self)
-                        return
-                    }
-                    let context = CIContext(options: nil)
-                    guard let cgImage = context.createCGImage(outputImage, from: ciImage.extent) else {
-                        complete?(self)
-                        return
-                    }
-                    let blurredImage = UIImage(cgImage: cgImage)
-                    ImageCache.default.store(blurredImage, forKey: cacheKey)
-                    complete?(blurredImage)
-                }
-            case .failure:
+        guard let url = cacheKey.asURL else {
+            complete?(self)
+            return
+        }
+        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+        AFImageDownloader.defaultInstance().downloadImage(for: request) { req, resp, image in
+            guard let ciImage = CIImage(image: self) else {
                 complete?(self)
+                return
             }
+            let filter = CIFilter(name: "CIGaussianBlur")
+            filter?.setValue(ciImage, forKey: kCIInputImageKey)
+            filter?.setValue(blurAmount, forKey: kCIInputRadiusKey)
+            
+            guard let outputImage = filter?.outputImage else {
+                complete?(self)
+                return
+            }
+            let context = CIContext(options: nil)
+            guard let cgImage = context.createCGImage(outputImage, from: ciImage.extent) else {
+                complete?(self)
+                return
+            }
+            let blurredImage = UIImage(cgImage: cgImage)
+            complete?(blurredImage)
+        } failure: { req, resp, error in
+            complete?(self)
         }
     }
 }

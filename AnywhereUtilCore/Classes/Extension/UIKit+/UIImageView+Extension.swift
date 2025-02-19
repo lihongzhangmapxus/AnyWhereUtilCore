@@ -7,45 +7,27 @@
 //
 
 import UIKit
-import Kingfisher
+import AFNetworking
 
 public typealias afnImageSuccess = (_ image: UIImage?, _ error: Error?) -> Void
 
 public extension UIImageView {
     // kf
     func setUrlImage(with urlString: String, placeholder: UIImage? = nil, completion: afnImageSuccess? = nil) {
-        guard let url = urlString.asURL else {
-            completion?(nil, nil)
+        setAfnUrl(with: urlString, placeholder: placeholder) { img in
+            completion?(img, nil)
+        }
+    }
+    func setAfnUrl(with urlString: String, placeholder: UIImage? = UIImage.getSdkImage(named: "placeholder_image"), finish: ((UIImage?) -> Void)?) {
+        guard let url = URL(string: urlString) else {
+            finish?(placeholder)
             return
         }
-        kf.setImage(with: url, placeholder: placeholder) { result in
-            switch result {
-            case .success(let result):
-                if let success = completion {
-                    success(result.image, nil)
-                }
-            case .failure(let error):
-                if let closure = completion {
-                    closure(nil, error)
-                }
-            }
+        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 30.0)
+        self.setImageWith(request, placeholderImage: placeholder) { req, rep, image in
+            AFImageDownloader.defaultInstance().imageCache?.add(image, for: request, withAdditionalIdentifier: nil)
+            self.image = image
+            finish?(image)
         }
-//        if let cachedImage = ImageCacheManager.shared.loadImage(for: url) {
-//            DispatchQueue.main.async { [self] in
-//                image = cachedImage
-//            }
-//            return
-//        }
-//        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
-//        setImageWith(request, placeholderImage: placeholder) { req, resp, image in
-//            self.image = image
-//            if let data = image.jpegData(compressionQuality: 1.0) {
-//                ImageCacheManager.shared.save(imageData: data, for: url)
-//            }
-//            completion?(image, nil)
-//        } failure: { req, resp, error in
-//            self.image = placeholder
-//            completion?(nil, error)
-//        }
     }
 }
