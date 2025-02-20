@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  version = '1.1.3'
+  version = '1.1.4'
 
   s.name             = 'AnywhereUtilCore'
   s.version          = version
