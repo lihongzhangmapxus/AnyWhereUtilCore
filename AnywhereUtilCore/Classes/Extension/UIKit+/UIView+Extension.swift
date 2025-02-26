@@ -75,3 +75,38 @@ public extension UIView {
         self.center = CGPoint(x: xPosition, y: yPosition)
     }
 }
+
+public extension UIView {
+    /// 气球浮动动画
+    func addFloatingAnimation(duration: CFTimeInterval = 2.0, repeatCount: Float = Float.greatestFiniteMagnitude, amplitude: CGFloat = 10) {
+        
+        let animation = CAKeyframeAnimation(keyPath: "position")
+        
+        // 设置动画路径
+        let currentPosition = self.center
+        let floatUp = CGPoint(x: currentPosition.x, y: currentPosition.y - amplitude)
+        let floatDown = CGPoint(x: currentPosition.x, y: currentPosition.y + amplitude)
+        
+        animation.values = [
+            NSValue(cgPoint: currentPosition),
+            NSValue(cgPoint: floatUp),
+            NSValue(cgPoint: floatDown),
+            NSValue(cgPoint: currentPosition)
+        ]
+        animation.duration = duration
+        animation.repeatCount = repeatCount
+        
+        // 设置动画的节奏
+        animation.timingFunctions = [
+            CAMediaTimingFunction(name: .easeIn),
+            CAMediaTimingFunction(name: .easeOut)
+        ]
+        // 添加动画到视图的图层
+        layer.add(animation, forKey: "floatAnimation")
+    }
+    
+    /// 移除浮动动画
+    func removeFloatingAnimation() {
+        self.layer.removeAnimation(forKey: "floatAnimation")
+    }
+}

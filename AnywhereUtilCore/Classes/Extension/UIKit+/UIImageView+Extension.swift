@@ -15,19 +15,46 @@ public extension UIImageView {
     // kf
     func setUrlImage(with urlString: String, placeholder: UIImage? = nil, completion: afnImageSuccess? = nil) {
         setAfnUrl(with: urlString, placeholder: placeholder) { img in
+            self.image = img
             completion?(img, nil)
         }
     }
-    func setAfnUrl(with urlString: String, placeholder: UIImage? = UIImage.getSdkImage(named: "placeholder_image"), finish: ((UIImage?) -> Void)?) {
-        guard let url = URL(string: urlString) else {
+    private func setAfnUrl(with source: AnyImageSource, placeholder: UIImage? = UIImage.getSdkImage(named: "placeholder_image"), finish: ((UIImage?) -> Void)?) {
+        guard let url = source.url else {
             finish?(placeholder)
             return
         }
+        let key = url.absoluteString
+        if let image = AnyImageWebConfig.default.memoryCache[key] {
+            finish?(image)
+            return
+        }
+        if let objc = try? AnyImageWebConfig.default.diskCache.value(key), let image = UIImage(data: objc.value) {
+            saveToMemory(image, key: key)
+            finish?(image)
+            return
+        }
         let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 30.0)
-        self.setImageWith(request, placeholderImage: placeholder) { req, rep, image in
-            AFImageDownloader.defaultInstance().imageCache?.add(image, for: request, withAdditionalIdentifier: nil)
+        
+        setImageWith(request, placeholderImage: placeholder) { [weak self] req, rep, image in
+            guard let self = self else { return }
+            saveToMemory(image, key: key)
+            let data = image.jpegData(compressionQuality: 1.0)
+            saveToDisk(data, key: key)
             self.image = image
             finish?(image)
         }
     }
+    
+    
+    private func saveToMemory(_ image: UIImage, key: String) {
+        AnyImageWebConfig.default.memoryCache[key] = image
+    }
+    
+    private func saveToDisk(_ image: Data?, key: String) {
+        if let data = image {
+            try? AnyImageWebConfig.default.diskCache.store(AnyDiskStroage(value: data, key: key))
+        }
+    }
+
 }

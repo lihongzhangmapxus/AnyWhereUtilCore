@@ -37,3 +37,64 @@ public class Cache<Value>: CacheStorage where Value: Codable {
     }
     
 }
+
+/// Image(_ source: Source)
+public protocol AnyImageSource {
+    var url: URL? { get }
+    var source: UIImage? { get }
+}
+
+
+/// Disk Cache Config
+public protocol AnyDiskConfig {
+    var maxDate: ExpirationDate { get }
+    var maxSize: Int64 { get }
+    var manager: FileManager { get }
+    var saveCachePath: URL { get }
+    var diskQueue: DispatchQueue { get }
+    init()
+}
+
+
+public enum AnyError: Error {
+    public enum DiskError {
+        case create(_ error: Error, _ path: String)
+        case store(_ error: Error)
+        case storeSetAttributes(_ error: Error)
+        case meta(_ error: Error)
+        case toData(_ error: Error)
+        case remove(_ error: Error)
+        case removeAll(_ error: Error)
+        case createDirectory(_ error: Error)
+    }
+    case diskError(DiskError)
+    
+}
+
+
+extension AnyError: LocalizedError {
+    
+    public var errorDescription: String? {
+        switch self {
+        case let .diskError(diskError):
+            switch diskError {
+            case let .create(error, path):
+                return "WFErrorr: \(error.localizedDescription), path: \(path)"
+            case let .store(error):
+                return "WFErrorr: \(error.localizedDescription), store failture"
+            case let .meta(error):
+                return "WFErrorr: \(error.localizedDescription),  read meta failture"
+            case let .toData(error):
+                return "WFErrorr: \(error.localizedDescription),  file toData failture"
+            case let .remove(error):
+                return "WFErrorr: \(error.localizedDescription),  remove file failture"
+            case let .removeAll(error):
+                return "WFErrorr: \(error.localizedDescription),  remove all failture"
+            case let .createDirectory(error):
+                return "WFErrorr: \(error.localizedDescription),  createDirectory failture"
+            case let .storeSetAttributes(error):
+                return "WFErrorr: \(error.localizedDescription),  storeSetAttributes failture"
+            }
+        }
+    }
+}

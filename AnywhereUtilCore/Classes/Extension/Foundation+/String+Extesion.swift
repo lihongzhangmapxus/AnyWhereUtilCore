@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import CommonCrypto
 
 public extension String {
     /// 正则匹配
@@ -297,3 +298,30 @@ public extension String {
         return nil
     }
 }
+
+
+extension String {
+    var md5: String {
+        let str = self.cString(using: String.Encoding.utf8)
+        let strLen = CC_LONG(self.lengthOfBytes(using: String.Encoding.utf8))
+        let digestLen = Int(CC_SHA1_DIGEST_LENGTH)
+        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)
+        CC_SHA1(str!, strLen, result)
+        var hash = ""
+        for i in 0..<digestLen {
+            hash.append(String.init(format: "%02x", result[i]))// appendFormat()
+        }
+        result.deallocate()
+        return String(format: hash )
+    }
+}
+
+extension String: AnyImageSource {
+    public var url: URL? {
+        return URL(string: self)
+    }
+    public var source: UIImage? {
+        return nil
+    }
+}
+

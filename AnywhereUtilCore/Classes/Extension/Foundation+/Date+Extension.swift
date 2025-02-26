@@ -295,3 +295,40 @@ public extension Date {
         return 1 // Default to Monday if there is an issue
     }
 }
+
+public enum ExpirationDate {
+    /// The item never expires.
+    case never
+    /// The item expires after a time duration of given seconds from now.
+    case seconds(TimeInterval)
+    /// The item expires after a time duration of given days from now.
+    case days(Int)
+    /// The item expires after a given date.
+    case date(Date)
+
+    func appendSince(_ date: Date) -> Date {
+        switch self {
+        case .never: return .distantFuture
+        case .seconds(let seconds):
+            return date.addingTimeInterval(seconds)
+        case .days(let days):
+            let duration = TimeInterval(86400 * days)
+            return date.addingTimeInterval(duration)
+        case .date(let ref):
+            return ref
+        }
+    }
+    
+    var isExpired: Bool {
+        return timeInterval <= 0
+    }
+
+    var timeInterval: TimeInterval {
+        switch self {
+        case .never: return .infinity
+        case .seconds(let seconds): return seconds
+        case .days(let days): return TimeInterval(86400 * days)
+        case .date(let ref): return ref.timeIntervalSinceNow
+        }
+    }
+}

@@ -189,6 +189,31 @@ public extension UIImage {
         return newImage
     }
 
+    // 组合两个UIImage：上下居中合并，宽度取决于最宽的图片
+    static func combineImage(topImage: UIImage, bottomImage: UIImage) -> UIImage {
+        // 计算最终合成图片的高度
+        let totalHeight = topImage.size.height + bottomImage.size.height
+        
+        // 取最宽的图片作为合成后的宽度
+        let width = max(topImage.size.width, bottomImage.size.width)
+        
+        // 开始一个新的图形上下文
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: totalHeight), false, 0.0)
+        
+        // 将 topImage 绘制到上下文的顶部
+        topImage.draw(in: CGRect(x: (width - topImage.size.width) / 2, y: 0, width: topImage.size.width, height: topImage.size.height))
+        
+        // 将 bottomImage 绘制到上下文的底部
+        bottomImage.draw(in: CGRect(x: (width - bottomImage.size.width) / 2, y: topImage.size.height, width: bottomImage.size.width, height: bottomImage.size.height))
+        
+        // 从当前上下文获取合成后的新图片
+        let combinedImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // 结束图形上下文
+        UIGraphicsEndImageContext()
+        
+        return combinedImage ?? UIImage()
+    }
 
     /// UIImage 设置圆角
     /// - Parameters:
@@ -246,6 +271,61 @@ public extension UIImage {
         UIGraphicsEndImageContext()
         return mergedImage
     }
+    
+    static var imageCache = NSCache<NSString, UIImage>()
+    static func image(from text: String, font: UIFont = UIFont.systemFont(ofSize: 14), maxWidth: CGFloat = 140, numberOfLines: Int = 3) -> UIImage?
+    {
+        // 检查是否已经缓存该图像
+        if let cachedImage = imageCache.object(forKey: text as NSString) {
+            return cachedImage
+        }
+        // 创建一个初步的 label
+        let label = UILabel()
+        label.numberOfLines = numberOfLines
+        label.font = font
+        label.text = text
+        label.textAlignment = .center
+        
+        // 设置最大宽度
+        label.frame.size.width = maxWidth
+        label.sizeToFit()
+        
+        // 如果文本的高度超出，限制为指定的最大行数
+        let maxHeight = font.lineHeight * CGFloat(numberOfLines)
+        let adjustedHeight = min(label.frame.size.height, maxHeight)
+        label.frame.size.height = adjustedHeight
+        
+        // 使用 UIGraphics开始绘图
+        UIGraphicsBeginImageContextWithOptions(label.frame.size, false, 0)
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        // 绘制背景色
+        context.setFillColor(UIColor.clear.cgColor)
+        context.fill(CGRect(origin: .zero, size: label.frame.size))
+        
+//        let attributes: [NSAttributedString.Key: Any] = [
+//            .font: font,
+//            .foregroundColor: UIColor.black,  // 文本颜色
+//            .strokeColor: UIColor.white,  // 描边颜色
+//            .strokeWidth: 2.0  // 描边宽度，负值表示描边在外侧
+//        ]
+//        let attributedString = NSAttributedString(string: text, attributes: attributes)
+//        // 绘制带有描边的文本
+//        attributedString.draw(in: label.bounds)
+        
+        // 绘制文本
+        label.layer.render(in: context)
+        
+        // 获取图像
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // 缓存图像
+        if let image = image {
+            imageCache.setObject(image, forKey: text as NSString)
+        }
+        return image
+    }
 
     class func getSdkImage(named: String, in bundle: Bundle? = .main) -> UIImage? {
         return UIImage(named: named, in: bundle, compatibleWith: nil)
@@ -283,4 +363,20 @@ public extension UIImage {
             complete?(self)
         }
     }
+}
+
+extension UIImage {
+    struct SaveTimeStruct {
+        static var time: Void?
+    }
+    
+    var time: Date? {
+        set {
+            objc_setAssociatedObject(self, &SaveTimeStruct.time, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+        get {
+            return objc_getAssociatedObject(self, &SaveTimeStruct.time) as? Date
+        }
+    }
+    
 }
