@@ -37,7 +37,7 @@ public final class MemoryCache<Value>: CacheStorage where Value: Codable {
 }
 
 
-public class AnyMemoryCache: NSCache<NSString, UIImage>
+class AnyMemoryCache: NSCache<NSString, UIImage>
 {
     private let weakCache = NSMapTable<NSString, UIImage>(keyOptions: .weakMemory, valueOptions: .weakMemory)
     private var keys = Set<String>()

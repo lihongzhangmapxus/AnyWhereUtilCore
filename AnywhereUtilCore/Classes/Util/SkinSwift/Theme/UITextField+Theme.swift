@@ -18,15 +18,16 @@ public extension UITextField {
 
     var theme_textColor: Theme.Color? {
         set {
-            guard let value = newValue?.rawValue else { return }
+            guard let value = newValue?.stringValue else { return }
             if let color = ThemeColor(value) {
                 register(value, methodKey: "setTextColor:", dataKey: &nameStruct.theme_textColorKey)
                 performThemePicker(selector: "setTextColor:", value: color)
             }
         }
         get {
-            guard let rawValue = theme_valueFor(&nameStruct.theme_textColorKey) else { return nil }
-            return Theme.Color(rawValue: rawValue)
+            return nil
+//            guard let rawValue = theme_valueFor(&nameStruct.theme_textColorKey) else { return nil }
+//            return Theme.Color(rawValue: rawValue)
         }
     }
 }

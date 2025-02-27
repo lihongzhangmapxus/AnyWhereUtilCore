@@ -296,7 +296,7 @@ public extension Date {
     }
 }
 
-public enum ExpirationDate {
+enum ExpirationDate {
     /// The item never expires.
     case never
     /// The item expires after a time duration of given seconds from now.

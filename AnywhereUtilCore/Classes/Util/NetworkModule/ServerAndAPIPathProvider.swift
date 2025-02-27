@@ -8,36 +8,44 @@
 import Foundation
 
 // 定义一个通用协议来获取服务器主机地址
-public protocol ServerProviderProtocol {
+@objc public protocol ServerProviderProtocol {
     var host: String { get }
     func serverHost() -> String
 }
 
 // 定义一个通用协议来获取 API 路径
-public protocol APIPathProviderProtocol {
+@objc public protocol APIPathProviderProtocol {
     func getPath() -> String
 }
 
-public enum Environment {
+@objc public enum Environment: Int {
     case dev
     case prod
     case kawasaki
 }
 
-public struct AppConfig {
+struct AppConfig {
     /// 当前环境，默认为开发环境
-    public static var currentEnvironment: Environment = .dev
+    static var currentEnvironment: Environment = .dev
     
     /// 自定义主机配置
     /// AppConfig.customHosts[.mapApiHost] = "custom-map-api.com"
     /// AppConfig.customHosts[.anywhereHost] = "custom-anywhere.com"
-    public static var customHosts: [AnyHashable: String] = [:]
+    static var customHosts: [AnyHashable: String] = [:]
 }
 
-public enum ServerConfig: Hashable, ServerProviderProtocol {
-    case mapApiHost
-    case serviceHost
-    case anywhereHost
+@objc public class ServerConfig: NSObject, ServerProviderProtocol {
+    @objc public enum HostType: Int {
+        case mapApiHost
+        case serviceHost
+        case anywhereHost
+    }
+
+    public let type: HostType
+
+    public init(type: HostType) {
+        self.type = type
+    }
 
     /// 根据当前环境返回对应的主机地址
     public var host: String {
@@ -56,7 +64,7 @@ public enum ServerConfig: Hashable, ServerProviderProtocol {
 
     /// 根据环境返回默认主机配置
     private func getDefaultHost(for environment: Environment) -> String {
-        switch self {
+        switch type {
         case .mapApiHost:
             return hostForEnvironment(environment, dev: "map-api-test.mapxus.com",
                                       prod: "map-api.mapxus.com",
@@ -82,13 +90,14 @@ public enum ServerConfig: Hashable, ServerProviderProtocol {
     }
 }
 
-enum APIPathProvider: APIPathProviderProtocol {
-    case shoplusQuestionPois // 示例：现有的 API 路径
-
-    func getPath() -> String {
-        switch self {
-        case .shoplusQuestionPois:
-            return ServerConfig.mapApiHost.host + "/api/v3/shoplus/question/pois"
-        }
-    }
-}
+//enum APIPathProvider: APIPathProviderProtocol {
+//    case shoplusQuestionPois // 示例：现有的 API 路径
+//
+//    func getPath() -> String {
+//        switch self {
+//        case .shoplusQuestionPois:
+//            let mapApiConfig = ServerConfig(type: .mapApiHost)
+//            return mapApiConfig.host + "/api/v3/shoplus/question/pois"
+//        }
+//    }
+//}

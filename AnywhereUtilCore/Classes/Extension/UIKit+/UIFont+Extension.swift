@@ -8,14 +8,14 @@
 
 import UIKit
 
-public enum RegisterFontError: Error {
+enum RegisterFontError: Error {
     case invalidFontFile
     case fontPathNotFound
     case initFontError
     case registerFailed(String) // 允许附加错误信息
 }
 
-public extension UIFont {
+extension UIFont {
     /// 动态注册字体
     /// - Parameters:
     ///   - path: 字体文件路径

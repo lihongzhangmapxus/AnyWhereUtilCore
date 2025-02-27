@@ -46,7 +46,7 @@ public protocol AnyImageSource {
 
 
 /// Disk Cache Config
-public protocol AnyDiskConfig {
+protocol AnyDiskConfig {
     var maxDate: ExpirationDate { get }
     var maxSize: Int64 { get }
     var manager: FileManager { get }
@@ -56,8 +56,8 @@ public protocol AnyDiskConfig {
 }
 
 
-public enum AnyError: Error {
-    public enum DiskError {
+enum AnyError: Error {
+    enum DiskError {
         case create(_ error: Error, _ path: String)
         case store(_ error: Error)
         case storeSetAttributes(_ error: Error)

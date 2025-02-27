@@ -7,11 +7,11 @@
 
 import Foundation
 
-public enum DecodableError: LocalizedError {
+enum DecodableError: LocalizedError {
     case noData
     case parseFailed
 
-    public var errorDescription: String? {
+    var errorDescription: String? {
         switch self {
         case .noData:
             return "No data available"
@@ -21,8 +21,8 @@ public enum DecodableError: LocalizedError {
     }
 }
 
-public extension Decodable {
-    static func decode(from data: Data?, key: String?) throws -> Self {
+extension Decodable {
+    public static func decode(from data: Data?, key: String?) throws -> Self {
         guard let dataTmp = data else {
             throw DecodableError.noData
         }

@@ -18,21 +18,20 @@ final class DISkinTool {
     private let key: String
     private let valueType: SkinValueType
     
-    init(key: String, type: SkinValueType) {
+    init(key: String, valueType: SkinValueType) {
         self.key = key
-        self.valueType = type
+        self.valueType = valueType
     }
     
-    func value(alpha: CGFloat = 1.0) -> Any? {
+    func value(alpha: CGFloat = 1.0, font: SkinFontType = .regular) -> Any? {
         switch valueType {
         case .color:
             return fetchColor(alpha: alpha)
-        case .font(let fontType):
-            return fetchFont(type: fontType)
+        case .font:
+            return fetchFont(type: font)
         case .corner:
             return fetchCorner()
-        case .unknown:
-            assertionFailure("未知的皮肤元素")
+        default:
             return nil
         }
     }
@@ -74,6 +73,8 @@ final class DISkinTool {
             return UIFont.systemFont(ofSize: 14)
         case .bold:
             return UIFont.boldSystemFont(ofSize: 14)
+        default:
+            return UIFont.systemFont(ofSize: 14)
         }
     }
     
@@ -154,15 +155,15 @@ extension DISkinTool
 
 // MARK: - 快速获取皮肤值
 public func ThemeColor(_ key: String, alpha: CGFloat = 1.0) -> UIColor? {
-    return DISkinTool(key: key, type: .color).value(alpha: alpha) as? UIColor
+    return DISkinTool(key: key, valueType: .color).value(alpha: alpha) as? UIColor
 }
 
 public func ThemeFont(_ key: String, _ type: SkinFontType = .regular) -> UIFont? {
-    return DISkinTool(key: key, type: .font(type)).value() as? UIFont
+    return DISkinTool(key: key, valueType: .font).value(font: type) as? UIFont
 }
 
 public func ThemeCorner(_ key: String) -> CGFloat {
-    if let value = DISkinTool(key: key, type: .corner).value() as? CGFloat {
+    if let value = DISkinTool(key: key, valueType: .corner).value() as? CGFloat {
         return value
     }
     return 0.0

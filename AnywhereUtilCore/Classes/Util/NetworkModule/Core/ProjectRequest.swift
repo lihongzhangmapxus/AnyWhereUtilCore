@@ -9,12 +9,21 @@
 import Foundation
 import AFNetworking
 
-public enum NetHTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
+@objc public enum NetHTTPMethod: Int {
+    case get
+    case post
+    
+    var code: String {
+        switch self {
+        case .get:
+            return "GET"
+        case .post:
+            return "POST"
+        }
+    }
 }
 
-public enum NetRequestSerializer {
+@objc public enum NetRequestSerializer: Int {
     case http
     case json
     case propertyList
@@ -41,14 +50,14 @@ protocol RequestManagerProtocol {
         parameters: [String: Any]?,
         method: NetHTTPMethod,
         requestSerializer: NetRequestSerializer,
-        callBack: @escaping((RequestResult<Data>) -> Void)
+        callBack: @escaping((RequestResult) -> Void)
     ) -> URLSessionTask?
 
     func noAuthorizationManagerRequest(withInterface interface: String,
                                        parameters: [String: Any]?,
                                        method: NetHTTPMethod,
                                        requestSerializer: NetRequestSerializer,
-                                       callBack: @escaping((RequestResult<Data>) -> Void)) -> URLSessionTask?
+                                       callBack: @escaping((RequestResult) -> Void)) -> URLSessionTask?
 
 
 }
@@ -72,7 +81,7 @@ public class ProjectRequest: NSObject {
     @discardableResult
     public func request(withInterface interface: APIPathProviderProtocol, parameters: [String: Any]?, method: NetHTTPMethod, requestSerializer: NetRequestSerializer = .json,
                  retryCount: Int = 0,  // 新增递归次数计数器
-                 completed: @escaping((RequestResult<Data>) -> Void)) -> URLSessionTask? {
+                 completed: @escaping((RequestResult) -> Void)) -> URLSessionTask? {
         var task: URLSessionTask?
 
         let path = interface.getPath()
@@ -81,19 +90,23 @@ public class ProjectRequest: NSObject {
 //            path = encodedStr
 //        }
         task = requestManager.managerRequest(withInterface: path, parameters: parameters, method: method, requestSerializer: requestSerializer) { result in
-            switch result {
-            case .success(let data):
-                completed(RequestResult.success(data))
-            case .failure(let tmpTask, let error):
-                completed(RequestResult.failure(tmpTask, error))
-            }
+            completed(result)
+//            switch result.type {
+//            case .success:
+//                completed(result.data as! RequestResult)
+//                completed(.success(result.data))
+//            case .failure:
+//                let tmpTask, let error
+//                completed(.failure(tmpTask, error))
+//            }
+            
         }
         return task
     }
 
     @discardableResult
     public func request(noAuthorization interface: APIPathProviderProtocol, parameters: [String: Any]?, method: NetHTTPMethod,
-        requestSerializer: NetRequestSerializer = .json, completed: @escaping((RequestResult<Data>) -> Void) ) -> URLSessionTask? {
+        requestSerializer: NetRequestSerializer = .json, completed: @escaping((RequestResult) -> Void) ) -> URLSessionTask? {
         var path = interface.getPath()
         // 处理URL空格情况
         if let encodedStr = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
@@ -105,32 +118,17 @@ public class ProjectRequest: NSObject {
             method: method,
             requestSerializer: requestSerializer
         ) { result in
-            switch result {
-            case .success(let data):
-                completed(RequestResult.success(data))
-            case .failure(let tmpTask, let error):
-                completed(RequestResult.failure(tmpTask, error))
-            default:
-                break
-            }
+            completed(result)
+//            switch result {
+//            case .success(let data):
+//                completed(RequestResult.success(data))
+//            case .failure(let tmpTask, let error):
+//                completed(RequestResult.failure(tmpTask, error))
+//            default:
+//                break
+//            }
         }
         return task
     }
-    
-    // 定义一个泛型请求方法
-    public class func performRequest<T: Decodable>(withInterface interface: APIPathProviderProtocol, parameters: [String: Any]?, jsonArrayKey: String = "result", method: NetHTTPMethod = .get, completion: @escaping (Result<T, Error>) -> Void) {
-        ProjectRequest.shared.request(withInterface: interface, parameters: parameters, method: method) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let decodedObject: T = try T.decode(from: data, key: jsonArrayKey)
-                    completion(.success(decodedObject))
-                } catch {
-                    completion(.failure(error))
-                }
-            case .failure(_, let error):
-                completion(.failure(error))
-            }
-        }
-    }
+
 }

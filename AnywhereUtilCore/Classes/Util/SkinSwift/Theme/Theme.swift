@@ -13,8 +13,7 @@ public enum Theme: String {
     case cornerCase = "Corner"
     case fontCase = "Font"
 
-    public enum Color: String {
-        // Used to communicate brand elements, and draw attention to critical elements, such as call to action buttons and list items:
+    @objc public enum Color: Int {
         case backgroundColor
         // direction
         case primaryBgColor
@@ -63,51 +62,121 @@ public enum Theme: String {
         case buildingSelectorDisableTextColor
         case buildingSelectorDisableBgColor
         case buildingSelectorDisableBorderColor
+        
+        public var stringValue: String {
+            switch self {
+            case .backgroundColor: return "backgroundColor"
+            case .primaryBgColor: return "primaryBgColor"
+            case .primaryBgDisableColor: return "primaryBgDisableColor"
+            case .primaryContentColor: return "primaryContentColor"
+            case .primaryContentDisableColor: return "primaryContentDisableColor"
+            case .secondaryBgColor: return "secondaryBgColor"
+            case .secondaryContentColor: return "secondaryContentColor"
+            case .searchBgColor: return "searchBgColor"
+            case .searchContentColor: return "searchContentColor"
+            case .tagBgSelected: return "tagBgSelected"
+            case .tagBgUnselected: return "tagBgUnselected"
+            case .tagContentSelected: return "tagContentSelected"
+            case .tagContentUnselected: return "tagContentUnselected"
+            case .floorBgSelected: return "floorBgSelected"
+            case .floorBgUnselected: return "floorBgUnselected"
+            case .floorContentSelected: return "floorContentSelected"
+            case .badgeColor: return "badgeColor"
+            case .inputFieldPlaceholder: return "inputFieldPlaceholder"
+            case .inputFieldTextColor: return "inputFieldTextColor"
+            case .inputFieldBgColor: return "inputFieldBgColor"
+            case .inputFieldBorder: return "inputFieldBorder"
+            case .inputFieldBorderUnfocused: return "inputFieldBorderUnfocused"
+            case .openColor: return "openColor"
+            case .closeColor: return "closeColor"
+            case .upcomingColor: return "upcomingColor"
+            case .commonTextColor: return "commonTextColor"
+            case .titleTextColor: return "titleTextColor"
+            case .subTextColor: return "subTextColor"
+            case .outdoorLineColor: return "outdoorLineColor"
+            case .indoorLineColor: return "indoorLineColor"
+            case .dashLineColor: return "dashLineColor"
+            case .buildingSelectorTextColor: return "buildingSelectorTextColor"
+            case .buildingSelectorBgColor: return "buildingSelectorBgColor"
+            case .buildingSelectorBorderColor: return "buildingSelectorBorderColor"
+            case .buildingSelectorDisableTextColor: return "buildingSelectorDisableTextColor"
+            case .buildingSelectorDisableBgColor: return "buildingSelectorDisableBgColor"
+            case .buildingSelectorDisableBorderColor: return "buildingSelectorDisableBorderColor"
+            }
+        }
     }
 
-    public enum Corner: String {
+    @objc public enum Corner: Int {
         case buttonShapeCorner
         case imageShapeCorner
         case searchBarShapeCorner
         case bottomSheetShapeCorner // (only appy to topLeft and topRight corner)
 
+        public var code: String {
+            switch self {
+            case .buttonShapeCorner:
+                return "buttonShapeCorner"
+            case .imageShapeCorner:
+                return "imageShapeCorner"
+            case .searchBarShapeCorner:
+                return "searchBarShapeCorner"
+            case .bottomSheetShapeCorner:
+                return "bottomSheetShapeCorner"
+            }
+        }
+        
         var defaultValue: CGFloat {
             switch self {
             case .buttonShapeCorner:
-                return ThemeCorner(self.rawValue)
+                return ThemeCorner(self.code)
             case .imageShapeCorner:
-                return ThemeCorner(self.rawValue)
+                return ThemeCorner(self.code)
             case .searchBarShapeCorner:
-                return ThemeCorner(self.rawValue)
+                return ThemeCorner(self.code)
             case .bottomSheetShapeCorner:
-                return ThemeCorner(self.rawValue)
+                return ThemeCorner(self.code)
             }
         }
     }
     
-    public enum Font: String {
+    @objc public enum Font: Int {
         case font_heading_1
         case font_heading_2
         case font_body_1
         case font_caption
         case font_titlelabel
         
+        public var code: String {
+            switch self {
+            case .font_heading_1:
+                return "font_heading_1"
+            case .font_heading_2:
+                return "font_heading_2"
+            case .font_body_1:
+                return "font_body_1"
+            case .font_caption:
+                return "font_caption"
+            case .font_titlelabel:
+                return "font_titlelabel"
+            }
+        }
+        
         public var defaultSize: CGFloat {
             switch self {
             case .font_heading_1:
-                let font = ThemeFont(self.rawValue)
+                let font = ThemeFont(self.code)
                 return font?.pointSize ?? 20.0
             case .font_heading_2:
-                let font = ThemeFont(self.rawValue)
+                let font = ThemeFont(self.code)
                 return font?.pointSize ?? 15.0
             case .font_body_1:
-                let font = ThemeFont(self.rawValue)
+                let font = ThemeFont(self.code)
                 return font?.pointSize ?? 13.0
             case .font_caption:
-                let font = ThemeFont(self.rawValue)
+                let font = ThemeFont(self.code)
                 return font?.pointSize ?? 13.0
             case .font_titlelabel:
-                let font = ThemeFont(self.rawValue)
+                let font = ThemeFont(self.code)
                 return font?.pointSize ?? 17.0
             }
         }
@@ -259,52 +328,52 @@ public enum Theme: String {
                             buildingSelectorDisableBorderColor: String
     ) {
         colorDict = [
-            Theme.Color.backgroundColor.rawValue: backgroundColor,
-            Theme.Color.primaryBgColor.rawValue: primaryBgColor,
-            Theme.Color.primaryBgDisableColor.rawValue: primaryBgDisableColor,
-            Theme.Color.primaryContentColor.rawValue: primaryContentColor,
-            Theme.Color.primaryContentDisableColor.rawValue: primaryContentDisableColor,
+            Theme.Color.backgroundColor.stringValue: backgroundColor,
+            Theme.Color.primaryBgColor.stringValue: primaryBgColor,
+            Theme.Color.primaryBgDisableColor.stringValue: primaryBgDisableColor,
+            Theme.Color.primaryContentColor.stringValue: primaryContentColor,
+            Theme.Color.primaryContentDisableColor.stringValue: primaryContentDisableColor,
             
-            Theme.Color.secondaryBgColor.rawValue: secondaryBgColor,
-            Theme.Color.secondaryContentColor.rawValue: secondaryContentColor,
+            Theme.Color.secondaryBgColor.stringValue: secondaryBgColor,
+            Theme.Color.secondaryContentColor.stringValue: secondaryContentColor,
 
-            Theme.Color.searchBgColor.rawValue: searchBgColor,
-            Theme.Color.searchContentColor.rawValue: searchContentColor,
+            Theme.Color.searchBgColor.stringValue: searchBgColor,
+            Theme.Color.searchContentColor.stringValue: searchContentColor,
 
-            Theme.Color.tagBgSelected.rawValue: tagBgSelected,
-            Theme.Color.tagBgUnselected.rawValue: tagBgUnselected,
-            Theme.Color.tagContentSelected.rawValue: tagContentSelected,
-            Theme.Color.tagContentUnselected.rawValue: tagContentUnselected,
+            Theme.Color.tagBgSelected.stringValue: tagBgSelected,
+            Theme.Color.tagBgUnselected.stringValue: tagBgUnselected,
+            Theme.Color.tagContentSelected.stringValue: tagContentSelected,
+            Theme.Color.tagContentUnselected.stringValue: tagContentUnselected,
 
-            Theme.Color.floorBgSelected.rawValue: floorBgSelected,
-            Theme.Color.floorBgUnselected.rawValue: floorBgUnselected,
-            Theme.Color.floorContentSelected.rawValue: floorContentSelected,
-            Theme.Color.badgeColor.rawValue: badgeColor,
+            Theme.Color.floorBgSelected.stringValue: floorBgSelected,
+            Theme.Color.floorBgUnselected.stringValue: floorBgUnselected,
+            Theme.Color.floorContentSelected.stringValue: floorContentSelected,
+            Theme.Color.badgeColor.stringValue: badgeColor,
 
-            Theme.Color.inputFieldPlaceholder.rawValue: inputFieldPlaceholder,
-            Theme.Color.inputFieldTextColor.rawValue: inputFieldTextColor,
-            Theme.Color.inputFieldBgColor.rawValue: inputFieldBgColor,
-            Theme.Color.inputFieldBorder.rawValue: inputFieldBorder,
-            Theme.Color.inputFieldBorderUnfocused.rawValue: inputFieldBorderUnfocused,
+            Theme.Color.inputFieldPlaceholder.stringValue: inputFieldPlaceholder,
+            Theme.Color.inputFieldTextColor.stringValue: inputFieldTextColor,
+            Theme.Color.inputFieldBgColor.stringValue: inputFieldBgColor,
+            Theme.Color.inputFieldBorder.stringValue: inputFieldBorder,
+            Theme.Color.inputFieldBorderUnfocused.stringValue: inputFieldBorderUnfocused,
 
-            Theme.Color.openColor.rawValue: openColor,
-            Theme.Color.closeColor.rawValue: closeColor,
-            Theme.Color.upcomingColor.rawValue: upcomingColor,
+            Theme.Color.openColor.stringValue: openColor,
+            Theme.Color.closeColor.stringValue: closeColor,
+            Theme.Color.upcomingColor.stringValue: upcomingColor,
 
-            Theme.Color.commonTextColor.rawValue: commonTextColor,
-            Theme.Color.titleTextColor.rawValue: titleTextColor,
-            Theme.Color.subTextColor.rawValue: subTextColor,
+            Theme.Color.commonTextColor.stringValue: commonTextColor,
+            Theme.Color.titleTextColor.stringValue: titleTextColor,
+            Theme.Color.subTextColor.stringValue: subTextColor,
 
-            Theme.Color.outdoorLineColor.rawValue: outdoorLineColor,
-            Theme.Color.indoorLineColor.rawValue: indoorLineColor,
-            Theme.Color.dashLineColor.rawValue: dashLineColor,
+            Theme.Color.outdoorLineColor.stringValue: outdoorLineColor,
+            Theme.Color.indoorLineColor.stringValue: indoorLineColor,
+            Theme.Color.dashLineColor.stringValue: dashLineColor,
 
-            Theme.Color.buildingSelectorTextColor.rawValue: buildingSelectorTextColor,
-            Theme.Color.buildingSelectorBgColor.rawValue: buildingSelectorBgColor,
-            Theme.Color.buildingSelectorBorderColor.rawValue: buildingSelectorBorderColor,
-            Theme.Color.buildingSelectorDisableTextColor.rawValue: buildingSelectorDisableTextColor,
-            Theme.Color.buildingSelectorDisableBgColor.rawValue: buildingSelectorDisableBgColor,
-            Theme.Color.buildingSelectorDisableBorderColor.rawValue: buildingSelectorDisableBorderColor
+            Theme.Color.buildingSelectorTextColor.stringValue: buildingSelectorTextColor,
+            Theme.Color.buildingSelectorBgColor.stringValue: buildingSelectorBgColor,
+            Theme.Color.buildingSelectorBorderColor.stringValue: buildingSelectorBorderColor,
+            Theme.Color.buildingSelectorDisableTextColor.stringValue: buildingSelectorDisableTextColor,
+            Theme.Color.buildingSelectorDisableBgColor.stringValue: buildingSelectorDisableBgColor,
+            Theme.Color.buildingSelectorDisableBorderColor.stringValue: buildingSelectorDisableBorderColor
         ]
         applyTheme()
     }
@@ -312,10 +381,10 @@ public enum Theme: String {
     // Configure corners
     public func setupCorners(buttonShapeCorner: CGFloat = 8, imageShapeCorner: CGFloat = 4, searchBarShapeCorner: CGFloat = 10, bottomSheetShapeCorner: CGFloat = 10) {
         cornerDict = [
-            Theme.Corner.buttonShapeCorner.rawValue: buttonShapeCorner,
-            Theme.Corner.imageShapeCorner.rawValue: imageShapeCorner,
-            Theme.Corner.searchBarShapeCorner.rawValue: searchBarShapeCorner,
-            Theme.Corner.bottomSheetShapeCorner.rawValue: bottomSheetShapeCorner
+            Theme.Corner.buttonShapeCorner.code: buttonShapeCorner,
+            Theme.Corner.imageShapeCorner.code: imageShapeCorner,
+            Theme.Corner.searchBarShapeCorner.code: searchBarShapeCorner,
+            Theme.Corner.bottomSheetShapeCorner.code: bottomSheetShapeCorner
         ]
         applyTheme()
     }
@@ -323,11 +392,11 @@ public enum Theme: String {
     // Configure fonts
     public func setupFonts(fontHeading1: CGFloat = 20, fontHeading2: CGFloat = 15, font_body_1: CGFloat = 13, font_caption: CGFloat = 13, font_titlelabel: CGFloat = 17) {
         fontDict = [
-            Theme.Font.font_heading_1.rawValue: fontHeading1,
-            Theme.Font.font_heading_2.rawValue: fontHeading2,
-            Theme.Font.font_body_1.rawValue: font_body_1,
-            Theme.Font.font_caption.rawValue: font_caption,
-            Theme.Font.font_titlelabel.rawValue: font_titlelabel
+            Theme.Font.font_heading_1.code: fontHeading1,
+            Theme.Font.font_heading_2.code: fontHeading2,
+            Theme.Font.font_body_1.code: font_body_1,
+            Theme.Font.font_caption.code: font_caption,
+            Theme.Font.font_titlelabel.code: font_titlelabel
         ]
         applyTheme()
     }

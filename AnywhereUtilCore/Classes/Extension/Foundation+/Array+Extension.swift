@@ -80,6 +80,6 @@ public extension Dictionary {
 }
 
 // 字典去重
-public protocol Duplicatable {
-    func isDuplicate(with other: Self) -> Bool
+@objc public protocol Duplicatable {
+    func isDuplicate(with other: NSObject) -> Bool
 }

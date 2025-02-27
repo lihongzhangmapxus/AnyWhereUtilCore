@@ -9,23 +9,23 @@ import Foundation
 
 class AnyDiskConfigObjc: AnyDiskConfig
 {
-    public var manager: FileManager = .default
-    public var maxDate: ExpirationDate = .days(7)
-    public var maxSize: Int64 = .max
+    var manager: FileManager = .default
+    var maxDate: ExpirationDate = .days(7)
+    var maxSize: Int64 = .max
     
-    public var saveCachePath: URL = {
+    var saveCachePath: URL = {
         let basePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first!
         var baseUrl = URL(fileURLWithPath: basePath)
         baseUrl.appendPathComponent("defalut_\(#function)")
         return baseUrl
     }()
-    public var diskQueue: DispatchQueue = DispatchQueue.init(label: "DiskQueue_\(UUID().uuidString)")
-    required public init() {
+    var diskQueue: DispatchQueue = DispatchQueue.init(label: "DiskQueue_\(UUID().uuidString)")
+    required init() {
     }
 }
 
 
-public class AnyImageWebConfig {
+class AnyImageWebConfig {
     static let `default` = AnyImageWebConfig()
     var diskConfig = AnyDiskConfigObjc()
     lazy var diskCache = AnyDiskCache(diskConfig)

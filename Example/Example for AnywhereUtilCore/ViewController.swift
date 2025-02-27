@@ -51,7 +51,7 @@ extension ViewController
         theme.setTheme(fromPlist: themePath)
         appSettings.currentTheme = theme
         
-        AppConfig.currentEnvironment = .prod
+        
 //        let tFont = ThemeFont(Theme.Font.font_heading_1.rawValue)
 //        let tColor = ThemeColor(Theme.Color.titleTextColor.rawValue)
 //        let tConrer = ThemeCorner(Theme.Corner.buttonShapeCorner.rawValue)
@@ -100,8 +100,8 @@ extension ViewController
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "test".localized()
-        label.font = ThemeFont(Theme.Font.font_heading_1.rawValue)
-        label.font = ThemeFont(Theme.Font.font_heading_1.rawValue, .bold)
+        label.font = ThemeFont(Theme.Font.font_heading_1.code)
+        label.font = ThemeFont(Theme.Font.font_heading_1.code, .bold)
         label.theme_textColor = .titleTextColor
         label.layer.cornerRadius = 6
         return label
@@ -112,8 +112,8 @@ extension ViewController
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = "test".localized()
-        label.font = ThemeFont(Theme.Font.font_heading_1.rawValue, .bold)
-        label.font = ThemeFont(Theme.Font.font_heading_1.rawValue)
+        label.font = ThemeFont(Theme.Font.font_heading_1.code, .bold)
+        label.font = ThemeFont(Theme.Font.font_heading_1.code)
         label.theme_textColor = .titleTextColor
         label.layer.cornerRadius = 6
         return label
@@ -170,28 +170,31 @@ extension ViewController
             return registerSuccess
         }
         
-        re.request(withInterface: APIPathProvider.shoplusQuestionPois, parameters: nil, method: .get) { result in
-            switch result {
-            case .success(let data):
-                print("*** data = \(data)")
-                break
-            case .failure(let task, let error):
-                print("*** error = \(error)")
-                break
-            }
-        }
+//        re.request(withInterface: APIPathProvider.shoplusQuestionPois, parameters: nil, method: .get) { result in
+//            switch result.type {
+//            case .success:
+//                let data = result.data
+//                print("*** data = \(data)")
+//                break
+//            case .failure:
+//                let error = result.failureError
+//                print("*** error = \(error)")
+//                break
+//            }
+//        }
         
     }
     
 }
 
-enum APIPathProvider: APIPathProviderProtocol {
-    case shoplusQuestionPois // 示例：现有的 API 路径
-
-    func getPath() -> String {
-        switch self {
-        case .shoplusQuestionPois:
-            return ServerConfig.mapApiHost.serverHost() + "/api/v3/shoplus/question/pois"
-        }
-    }
-}
+//enum APIPathProvider: APIPathProviderProtocol {
+//    case shoplusQuestionPois // 示例：现有的 API 路径
+//
+//    func getPath() -> String {
+//        switch self {
+//        case .shoplusQuestionPois:
+//            let config = ServerConfig(type: .mapApiHost)
+//            return config.serverHost() + "/api/v3/shoplus/question/pois"
+//        }
+//    }
+//}

@@ -39,7 +39,8 @@ public extension UIImageView {
         setImageWith(request, placeholderImage: placeholder) { [weak self] req, rep, image in
             guard let self = self else { return }
             saveToMemory(image, key: key)
-            let data = image.jpegData(compressionQuality: 1.0)
+//            let data = image.jpegData(compressionQuality: 1.0)
+            let data = image.pngData()
             saveToDisk(data, key: key)
             self.image = image
             finish?(image)

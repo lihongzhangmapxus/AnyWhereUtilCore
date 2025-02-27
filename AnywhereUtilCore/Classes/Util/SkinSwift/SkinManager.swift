@@ -24,16 +24,17 @@ enum SkinError: Error, LocalizedError {
 }
 
 // MARK: - 类型定义
-enum SkinValueType {
+@objc enum SkinValueType: Int {
     case color
-    case font(SkinFontType)
+    case font
     case corner
     case unknown
 }
 
-public enum SkinFontType {
+@objc public enum SkinFontType: Int {
     case regular
     case bold
+    case italic
 }
 
 // MARK: - 换肤操作回调

@@ -41,10 +41,10 @@ public struct DiskCache<Value>: CacheStorage where Value: Codable {
 }
 
 
-public class AnyDiskStroage
+class AnyDiskStroage
 {
-    public var value: Data
-    public var key: String
+    var value: Data
+    var key: String
     
     required public init(value: Data, key: String) {
         self.value = value
@@ -52,7 +52,7 @@ public class AnyDiskStroage
     }
 }
 
-public class AnyDiskCache
+class AnyDiskCache
 {
     let lock = NSLock()
     let config: AnyDiskConfig

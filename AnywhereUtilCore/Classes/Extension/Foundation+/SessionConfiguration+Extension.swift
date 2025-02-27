@@ -9,7 +9,7 @@
 import Foundation
 import AFNetworking
 
-public extension URLSessionConfiguration {
+extension URLSessionConfiguration {
     static let swizzleSessionConfiguration: Void = {
         let originalSelector = #selector(getter: URLSessionConfiguration.default)
         let swizzledSelector = #selector(getter: URLSessionConfiguration.swizzledDefault)
@@ -28,7 +28,7 @@ public extension URLSessionConfiguration {
 }
 
 
-public extension AFHTTPSessionManager {
+extension AFHTTPSessionManager {
     static let swizzleGET: Void = {
         let originalSelector = #selector(AFHTTPSessionManager.get(_:parameters:headers:progress:success:failure:))
         let swizzledSelector = #selector(swizzled_GET(_:parameters:headers:progress:success:failure:))

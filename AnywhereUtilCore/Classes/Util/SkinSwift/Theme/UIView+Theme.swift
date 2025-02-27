@@ -16,22 +16,23 @@ private struct nameStruct {
 public extension UIView {
     var theme_backgroundColor: Theme.Color? {
         set {
-            guard let value = newValue?.rawValue else { return }
+            guard let value = newValue?.stringValue else { return }
             if let color = ThemeColor(value) {
                 register(value, methodKey: "setBackgroundColor:", dataKey: &nameStruct.theme_backgroundColorKey)
                 performThemePicker(selector: "setBackgroundColor:", value: color)
             }
         }
         get {
-            guard let rawValue = theme_valueFor(&nameStruct.theme_backgroundColorKey) else { return nil }
-            return Theme.Color(rawValue: rawValue)
+            return nil
+//            guard let rawValue = theme_valueFor(&nameStruct.theme_backgroundColorKey) else { return nil }
+//            return Theme.Color(rawValue: rawValue)
         }
     }
 }
 
 public extension UIButton {
     func theme_setTitleColor(_ color: Theme.Color?, for state: UIControl.State) {
-        guard let value = color?.rawValue else { return }
+        guard let value = color?.stringValue else { return }
         if let color = ThemeColor(value) {
             setTitleColor(color, for: state)
             var pik = pickers
@@ -44,7 +45,7 @@ public extension UIButton {
     }
 
     func theme_setBackgroundColor(_ color: Theme.Color?, for state: UIControl.State) {
-        guard let value = color?.rawValue else { return }
+        guard let value = color?.stringValue else { return }
         if let color = ThemeColor(value) {
             setBackgroundImage(imageFromColor(color: color), for: state)
             layer.masksToBounds = true

@@ -40,7 +40,7 @@ public class RequestManager: RequestManagerProtocol
     }()
     
     @discardableResult
-    func noAuthorizationManagerRequest(withInterface interface: String, parameters: [String: Any]?, method: NetHTTPMethod, requestSerializer: NetRequestSerializer, callBack: @escaping ((RequestResult<Data>) -> Void)) -> URLSessionTask? {
+    func noAuthorizationManagerRequest(withInterface interface: String, parameters: [String: Any]?, method: NetHTTPMethod, requestSerializer: NetRequestSerializer, callBack: @escaping ((RequestResult) -> Void)) -> URLSessionTask? {
         switch requestSerializer {
         case .http:
             noAuthorizationManager.requestSerializer = AFHTTPRequestSerializer()
@@ -51,10 +51,17 @@ public class RequestManager: RequestManagerProtocol
         }
 
         let successBlock: (URLSessionDataTask, Any) -> Void = { _, data in
-            callBack(.success(data as? Data))
+            // 如果成功，封装为 .success 类型
+            let result = RequestResult(type: .success, data: data as? Data)
+            callBack(result)
+//            callBack(.success(data as? Data))
         }
         let failureBlock: (URLSessionDataTask?, Error) -> Void = { sectionTask, error in
-            callBack(.failure(sectionTask, error))
+            // 如果失败，封装为 .failure 类型，确保转换 Error 为 NSError
+            let nsError = error as NSError
+            let result = RequestResult(type: .failure, error: nsError, sessionTask: sectionTask)
+            callBack(result)
+//            callBack(.failure(sectionTask, error as NSError))
         }
 
         switch method {
@@ -87,14 +94,20 @@ public class RequestManager: RequestManagerProtocol
         parameters: [String: Any]?,
         method: NetHTTPMethod,
         requestSerializer: NetRequestSerializer,
-        callBack: @escaping ((RequestResult<Data>) -> Void)
+        callBack: @escaping ((RequestResult) -> Void)
     ) -> URLSessionTask? {
 
         let successBlock: (URLSessionDataTask, Any) -> Void = { _, data in
-            callBack(.success(data as? Data))
+            let result = RequestResult(type: .success, data: data as? Data)
+            callBack(result)
+//            callBack(.success(data as? Data))
         }
         let failureBlock: (URLSessionDataTask?, Error) -> Void = { task, error in
-            callBack(.failure(task, error))
+            // 如果失败，封装为 .failure 类型，确保转换 Error 为 NSError
+            let nsError = error as NSError
+            let result = RequestResult(type: .failure, error: nsError)
+            callBack(result)
+//            callBack(.failure(task, error as NSError))
         }
 
         switch method {

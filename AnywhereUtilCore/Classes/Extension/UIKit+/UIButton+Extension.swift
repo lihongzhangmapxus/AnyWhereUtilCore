@@ -11,7 +11,7 @@ import UIKit
 /*
 枚举 设置 图片的位置
 */
-public enum ButtonImagePosition: Int {
+@objc public enum ButtonImagePosition: Int {
     case imageTop = 0
     case imageLeft
     case imageBottom
