@@ -62,7 +62,11 @@ public extension UIFont
         guard let name = SkinManager.shared.regularName else {
             return .systemFont(ofSize: size)
         }
-        return loadFont(size, name: name, path: SkinManager.shared.regularPath)
+        var resourcePath = SkinManager.shared.regularPath
+        if resourcePath == nil {
+            resourcePath = BundleCore.utilBundle?.path(forResource: "Ubuntu-Regular", ofType: "ttf")
+        }
+        return loadFont(size, name: name, path: resourcePath)
     }
 
     /// 获取加粗自定义字体
@@ -70,7 +74,11 @@ public extension UIFont
         guard let name = SkinManager.shared.boldName else {
             return .boldSystemFont(ofSize: size)
         }
-        return loadFont(size, name: name, path: SkinManager.shared.boldPath)
+        var resourcePath = SkinManager.shared.boldPath
+        if resourcePath == nil {
+            resourcePath = BundleCore.utilBundle?.path(forResource: "Ubuntu-Bold", ofType: "ttf")
+        }
+        return loadFont(size, name: name, path: resourcePath)
     }
 
     private static func loadFont(_ size: CGFloat, name: String, path: String?) -> UIFont

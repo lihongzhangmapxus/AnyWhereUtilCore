@@ -79,7 +79,10 @@ public extension UIView {
 public extension UIView {
     /// 气球浮动动画
     func addFloatingAnimation(duration: CFTimeInterval = 2.0, repeatCount: Float = Float.greatestFiniteMagnitude, amplitude: CGFloat = 10) {
-        
+        // 在添加新动画之前，先检查并移除已经存在的动画
+        if layer.animation(forKey: "floatAnimation") != nil {
+            removeFloatingAnimation()
+        }
         let animation = CAKeyframeAnimation(keyPath: "position")
         
         // 设置动画路径
