@@ -77,39 +77,55 @@ public extension UIView {
 }
 
 public extension UIView {
-    /// 气球浮动动画
-    func addFloatingAnimation(duration: CFTimeInterval = 2.0, repeatCount: Float = Float.greatestFiniteMagnitude, amplitude: CGFloat = 10) {
-        // 在添加新动画之前，先检查并移除已经存在的动画
-        if layer.animation(forKey: "floatAnimation") != nil {
-            removeFloatingAnimation()
-        }
-        let animation = CAKeyframeAnimation(keyPath: "position")
+//    func addFloatingAnimation(duration: CFTimeInterval = 2.0, repeatCount: Float = Float.greatestFiniteMagnitude, amplitude: CGFloat = 10) {
+//        // 在添加新动画之前，先检查并移除已经存在的动画
+//        if layer.animation(forKey: "floatAnimation") != nil {
+//            removeFloatingAnimation()
+//        }
+//        let animation = CAKeyframeAnimation(keyPath: "position")
+//        
+//        // 设置动画路径
+//        let currentPosition = self.center
+//        let floatUp = CGPoint(x: currentPosition.x, y: currentPosition.y - amplitude)
+//        let floatDown = CGPoint(x: currentPosition.x, y: currentPosition.y + amplitude)
+//        
+//        animation.values = [
+//            NSValue(cgPoint: currentPosition),
+//            NSValue(cgPoint: floatUp),
+//            NSValue(cgPoint: floatDown),
+//            NSValue(cgPoint: currentPosition)
+//        ]
+//        animation.duration = duration
+//        animation.repeatCount = repeatCount
+//        
+//        // 设置动画的节奏
+//        animation.timingFunctions = [
+//            CAMediaTimingFunction(name: .easeIn),
+//            CAMediaTimingFunction(name: .easeOut)
+//        ]
+//        // 添加动画到视图的图层
+//        layer.add(animation, forKey: "floatAnimation")
+//    }
+//    
+//    /// 移除浮动动画
+//    func removeFloatingAnimation() {
+//        self.layer.removeAnimation(forKey: "floatAnimation")
+//    }
+    func addSmoothFloatingAnimation(duration: CFTimeInterval = 2.0, amplitude: CGFloat = 10) {
+        if layer.animation(forKey: "smoothFloat") != nil { return }
         
-        // 设置动画路径
-        let currentPosition = self.center
-        let floatUp = CGPoint(x: currentPosition.x, y: currentPosition.y - amplitude)
-        let floatDown = CGPoint(x: currentPosition.x, y: currentPosition.y + amplitude)
-        
-        animation.values = [
-            NSValue(cgPoint: currentPosition),
-            NSValue(cgPoint: floatUp),
-            NSValue(cgPoint: floatDown),
-            NSValue(cgPoint: currentPosition)
-        ]
+        let animation = CABasicAnimation(keyPath: "position.y")
+        animation.fromValue = center.y - amplitude
+        animation.toValue = center.y + amplitude
         animation.duration = duration
-        animation.repeatCount = repeatCount
+        animation.autoreverses = true
+        animation.repeatCount = .greatestFiniteMagnitude
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         
-        // 设置动画的节奏
-        animation.timingFunctions = [
-            CAMediaTimingFunction(name: .easeIn),
-            CAMediaTimingFunction(name: .easeOut)
-        ]
-        // 添加动画到视图的图层
-        layer.add(animation, forKey: "floatAnimation")
+        layer.add(animation, forKey: "smoothFloat")
     }
     
-    /// 移除浮动动画
-    func removeFloatingAnimation() {
-        self.layer.removeAnimation(forKey: "floatAnimation")
+    func removeSmoothFloatingAnimation() {
+        layer.removeAnimation(forKey: "smoothFloat")
     }
 }
