@@ -35,11 +35,14 @@ public extension URL {
             return
         }
 
-        AFImageDownloader.defaultInstance().downloadImage(for: request) { req, resp, img in
+        let downloader = AFImageDownloader.defaultInstance()
+        downloader.sessionManager.responseSerializer.acceptableContentTypes = ["image/jpeg", "image/jpg", "image/png"]
+        downloader.downloadImage(for: request) { req, resp, img in
             AnyImageWebConfig.default.memoryCache[key] = img
             //确保你保存的是透明背景的 PNG 图像格式，因为 PNG 是支持透明度的，而 JPEG 不支持透明背景。你可以在保存图片时确保图像格式为 PNG。
-            let data = img.pngData()
-            saveToDisk(data, key: key)
+            if let data = img.pngData() {
+                saveToDisk(data, key: key)
+            }
             completion(img, nil)
         } failure: { req, resp, error in
             completion(nil, error)

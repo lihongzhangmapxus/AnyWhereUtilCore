@@ -339,7 +339,9 @@ public extension UIImage {
             return
         }
         let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
-        AFImageDownloader.defaultInstance().downloadImage(for: request) { req, resp, image in
+        let downloader = AFImageDownloader.defaultInstance()
+        downloader.sessionManager.responseSerializer.acceptableContentTypes = ["image/jpeg", "image/jpg", "image/png"]
+        downloader.downloadImage(for: request) { req, resp, image in
             guard let ciImage = CIImage(image: self) else {
                 complete?(self)
                 return
