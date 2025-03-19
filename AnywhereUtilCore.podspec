@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  version = '1.1.7'
+  version = '1.1.8'
 
   s.name             = 'AnywhereUtilCore'
   s.version          = version
@@ -28,7 +28,7 @@ Project common basic library, separate modules
   s.source_files = 'AnywhereUtilCore/Classes/**/*'
   s.resource_bundles = {
       'AnywhereUtilCore' => [
-          'AnywhereUtilCore/Assets/**/*.{xcassets,ttf}'
+          'AnywhereUtilCore/Assets/**/*'
       ]
   }
   
